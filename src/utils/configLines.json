@@ -1,0 +1,36 @@
+[
+    {
+        "canvasRef": "linesCanvasRef",
+        "context": "2d",
+        "settings": {
+            "startX": 0,
+            "startY": 0.08,
+            "angle": 0,
+            "maxLength": 0,
+            "growthSpeed": 1.2,
+            "angleIncrement": 45,
+            "spin": true,
+            "momentSpin1": 0.1,
+            "momentSpin2": 0.12,
+            "maxTotalLength": 0.2
+        },
+        "circleCallbackRef": "circleCanvasRef"
+    },
+    {
+        "canvasRef": "linesCanvasRef",
+        "context": "2d",
+        "settings": {
+            "startX": 0,
+            "startY": 0.08,
+            "angle": 0,
+            "maxLength": 0,
+            "growthSpeed": 1.2,
+            "angleIncrement": -45,
+            "spin": true,
+            "momentSpin1": 0.058,
+            "momentSpin2": 0.077,
+            "maxTotalLength": 0.11
+        },
+        "circleCallbackRef": "circleCanvasRef2"
+    }
+]
