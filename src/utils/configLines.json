@@ -1,36 +1,215 @@
 [
     {
-        "canvasRef": "linesCanvasRef",
-        "context": "2d",
-        "settings": {
-            "startX": 0,
-            "startY": 0.08,
-            "angle": 0,
-            "maxLength": 0,
-            "growthSpeed": 1.2,
-            "angleIncrement": 45,
-            "spin": true,
-            "momentSpin1": 0.1,
-            "momentSpin2": 0.12,
-            "maxTotalLength": 0.2
-        },
-        "circleCallbackRef": "circleCanvasRef"
+        "startX": 0,
+        "startY": 0.08,
+        "angle": 0,
+        "growthSpeed": 1.2,
+        "angleIncrement": 45,
+        "spin": true,
+        "momentSpin1": 0.1,
+        "momentSpin2": 0.12,
+        "maxTotalLength": 0.2
     },
     {
-        "canvasRef": "linesCanvasRef",
-        "context": "2d",
-        "settings": {
-            "startX": 0,
-            "startY": 0.08,
-            "angle": 0,
-            "maxLength": 0,
-            "growthSpeed": 1.2,
-            "angleIncrement": -45,
-            "spin": true,
-            "momentSpin1": 0.058,
-            "momentSpin2": 0.077,
-            "maxTotalLength": 0.11
-        },
-        "circleCallbackRef": "circleCanvasRef2"
+        "startX": 0,
+        "startY": 0.08,
+        "angle": 0,
+        "growthSpeed": 1.2,
+        "angleIncrement": -45,
+        "spin": true,
+        "momentSpin1": 0.058,
+        "momentSpin2": 0.077,
+        "maxTotalLength": 0.11
+    },
+    {
+        "startX": 0,
+        "startY": 0.08,
+        "angle": 0,
+        "growthSpeed": 1.2,
+        "angleIncrement": 45,
+        "spin": true,
+        "momentSpin1": 0.01,
+        "momentSpin2": 0.035,
+        "maxTotalLength": 0.06
+    },
+
+    {
+        "startX": 0.40,
+        "startY": 0,
+        "angle": 180,
+        "growthSpeed": 1.2,
+        "angleIncrement": 120,
+        "spin": true,
+        "momentSpin1": 0,
+        "momentSpin2": 0.025,
+        "maxTotalLength": 0.15
+    },
+
+    {
+        "startX": 1,
+        "startY": 0.075,
+        "angle": 180,
+        "growthSpeed": 1.2,
+        "angleIncrement": 155,
+        "spin": true,
+        "momentSpin1": 0.54,
+        "momentSpin2": 0.55,
+        "maxTotalLength": 0.62
+    },
+    {
+        "startX": 1,
+        "startY": 0.075,
+        "angle": 180,
+        "growthSpeed": 1.2,
+        "angleIncrement": -155,
+        "spin": true,
+        "momentSpin1": 0.53,
+        "momentSpin2": 0.54,
+        "maxTotalLength": 0.56
+    },
+    {
+        "startX": 1,
+        "startY": 0.075,
+        "angle": 180,
+        "growthSpeed": 1.2,
+        "angleIncrement": -120,
+        "spin": true,
+        "momentSpin1": 0.03,
+        "momentSpin2": 0.04,
+        "maxTotalLength": 0.08
+    },
+    {
+        "startX": 1,
+        "startY": 0.075,
+        "angle": 180,
+        "growthSpeed": 1.2,
+        "angleIncrement": 120,
+        "spin": true,
+        "momentSpin1": 0.06,
+        "momentSpin2": 0.075,
+        "maxTotalLength": 0.12
+    },
+    {
+        "startX": 1,
+        "startY": 0.075,
+        "angle": 180,
+        "growthSpeed": 1.2,
+        "angleIncrement": 120,
+        "spin": true,
+        "momentSpin1": 0.16,
+        "momentSpin2": 0.17,
+        "maxTotalLength": 0.20,
+        "text": "< Contacto />",
+        "url": "#contact"
+    },
+    {
+        "startX": 1,
+        "startY": 0.075,
+        "angle": 180,
+        "growthSpeed": 1.2,
+        "angleIncrement": 120,
+        "spin": true,
+        "momentSpin1": 0.26,
+        "momentSpin2": 0.277,
+        "maxTotalLength": 0.30,
+        "text": "< Proyectos />",
+        "url": "#projects"
+    },
+    {
+        "startX": 1,
+        "startY": 0.075,
+        "angle": 180,
+        "growthSpeed": 1.2,
+        "angleIncrement": 120,
+        "spin": true,
+        "momentSpin1": 0.36,
+        "momentSpin2": 0.367,
+        "maxTotalLength": 0.40,
+        "text": "< Sobre mi />",
+        "url": "#aboutme"
+    },
+    {
+        "startX": 1,
+        "startY": 0.075,
+        "angle": 180,
+        "growthSpeed": 1.2,
+        "angleIncrement": 120,
+        "spin": true,
+        "momentSpin1": 0.46,
+        "momentSpin2": 0.472,
+        "maxTotalLength": 0.50,
+        "text": "< Home />",
+        "url": "#home"
+    },
+
+    {
+        "startX": 0,
+        "startY": 0.5,
+        "angle": -90,
+        "growthSpeed": 1.2,
+        "angleIncrement": -45,
+        "spin": true,
+        "momentSpin1": 0,
+        "momentSpin2": 0.01,
+        "maxTotalLength": 0.07
+    },
+
+    {
+        "startX": 0,
+        "startY": 0.9,
+        "angle": -90,
+        "growthSpeed": 1.2,
+        "angleIncrement": -45,
+        "spin": true,
+        "momentSpin1": 0,
+        "momentSpin2": 0.013,
+        "maxTotalLength": 0.18
+    },
+    {
+        "startX": 0,
+        "startY": 0.9,
+        "angle": -45,
+        "growthSpeed": 1.2,
+        "angleIncrement": -90,
+        "spin": true,
+        "momentSpin1": 0.013,
+        "momentSpin2": 0.025,
+        "momentSpin3": 0.042,
+        "maxTotalLength": 0.08
+    },
+
+    {
+        "startX": 1,
+        "startY": 0.45,
+        "angle": -90,
+        "growthSpeed": 1.2,
+        "angleIncrement": -120,
+        "spin": true,
+        "momentSpin1": 0,
+        "momentSpin2": 0.04,
+        "maxTotalLength": 0.12
+    },
+    {
+        "startX": 1,
+        "startY": 0.9,
+        "angle": -90,
+        "growthSpeed": 1.2,
+        "angleIncrement": -120,
+        "spin": true,
+        "momentSpin1": 0,
+        "momentSpin2": 0.013,
+        "maxTotalLength": 0.18
+    },
+    {
+        "startX": 1,
+        "startY": 0.9,
+        "angle": -120,
+        "growthSpeed": 1.2,
+        "angleIncrement": -90,
+        "spin": true,
+        "momentSpin1": 0.013,
+        "momentSpin2": 0.025,
+        "momentSpin3": 0.042,
+        "maxTotalLength": 0.08
     }
 ]

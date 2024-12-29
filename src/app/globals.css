@@ -19,3 +19,26 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Personalización de la barra de desplazamiento para navegadores basados en WebKit */
+::-webkit-scrollbar {
+  width: 2px; /* Ancho del scroll vertical */
+  height: 2px; /* Altura del scroll horizontal */
+}
+
+::-webkit-scrollbar-track {
+  background: black; /* Fondo transparente */
+}
+
+::-webkit-scrollbar-thumb {
+  background: white; /* Color blanco */
+  border-radius: 2px; /* Bordes redondeados */
+}
+
+
+/* Para navegadores como Firefox 
+html {
+  scrollbar-color: rgb(255, 255, 255) black; /* Solo el thumb es visible
+  scrollbar-width: thin;
+}
+*/

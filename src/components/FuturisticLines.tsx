@@ -1,26 +1,30 @@
 "use client";
 
-import { useEffect, useRef /*, useState */ } from "react";
-// import config from "../utils/configLines.json";
+import { useEffect, useRef, useState } from "react";
+import configLines from "../utils/configLines.json";
+import styles from "../styles/futuristicLines.module.css"; // Importa el archivo CSS
 
 interface LineParams {
   startX: number; // Coordenada X inicial
   startY: number; // Coordenada Y inicial
   angle: number; // Ángulo inicial
-  maxLength: number; // Longitud máxima para el tramo actual
   growthSpeed: number; // Velocidad de crecimiento
   angleIncrement: number; // Incremento del ángulo
   maxTotalLength: number; // Longitud total máxima
   spin?: boolean; // Gira?,
   momentSpin1?: number,
   momentSpin2?: number,
+  momentSpin3?: number,
   color?: string; // Color de la línea
+  text?: string;
+  url?: string;
 }
 
 const GrowingLines: React.FC = () => {
   const linesCanvasRef = useRef<HTMLCanvasElement | null>(null);
-  const circleCanvasRef = useRef<HTMLCanvasElement | null>(null);
-  const circleCanvasRef2 = useRef<HTMLCanvasElement | null>(null);
+  const circleCanvasRefs = useRef<(HTMLCanvasElement | null)[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [textElements, setTextElements] = useState<JSX.Element[]>([]);
 
   const drawLines = (
     ctx: CanvasRenderingContext2D,
@@ -33,21 +37,23 @@ const GrowingLines: React.FC = () => {
       startX,
       startY,
       angle,
-      maxLength,
       growthSpeed,
       angleIncrement,
       maxTotalLength,
       spin = false,
       momentSpin1 = 0,
       momentSpin2 = 0,
+      momentSpin3 = 0,
       color = "white",
+      text,
+      url,
     } = params;
 
     let currentX = startX;
     let currentY = startY;
     let currentAngle = angle;
-    let currentMaxLength = maxLength;
     let totalLength = 0;
+    let textDrawn = false;
 
     const drawSegment = () => {
       if (totalLength >= maxTotalLength) {
@@ -56,17 +62,43 @@ const GrowingLines: React.FC = () => {
 
       if (spin && totalLength > canvasWidth * momentSpin1) {
         currentAngle = angleIncrement;
-        if (spin && totalLength > canvasWidth * momentSpin2) {
-          currentAngle = 0;
+        if (!textDrawn && text && url) {
+          console.log(text)
+          const textX = currentX;
+          const textY = currentY - 17;
+          const fontSize = Math.max(12, canvasWidth * 0.011);
+          setTextElements((prev) => [
+        ...prev,
+        <a
+          key={text}
+          href={url}
+          className={styles.fadeIn} 
+          style={{
+            top: `${textY}px`,
+            left: `${textX}px`,
+            fontSize: `${fontSize}px`,
+          }}
+        >
+          {text}
+        </a>,
+          ]);
+          textDrawn = true;
+        }
+        if ((spin && totalLength > canvasWidth * momentSpin2)) {
+          currentAngle = angle;
+        }
+        if ((spin && totalLength > canvasWidth * momentSpin3) && momentSpin3 !== 0) {
+          currentAngle = -90;
         }
       }
 
-      const nextX = Math.round(currentX + growthSpeed * Math.cos(currentAngle));
-      const nextY = Math.round(currentY + growthSpeed * Math.sin(currentAngle));
-
+      const angleInRadians = currentAngle * (Math.PI / 180);
+      const nextX = Math.round(currentX + growthSpeed * Math.cos(angleInRadians));
+      const nextY = Math.round(currentY + growthSpeed * Math.sin(angleInRadians));
+      // console.log(currentX + growthSpeed * Math.cos(angleInRadians), currentY + growthSpeed * Math.sin(angleInRadians))
       ctx.strokeStyle = color;
       ctx.lineWidth = 1.7;
-
+      ctx.imageSmoothingEnabled = true;
       ctx.beginPath();
       ctx.moveTo(Math.round(currentX), Math.round(currentY));
       ctx.lineTo(nextX, nextY);
@@ -79,10 +111,6 @@ const GrowingLines: React.FC = () => {
       currentY = nextY;
 
       totalLength += growthSpeed;
-
-      if (Math.hypot(nextX - startX, nextY - startY) >= currentMaxLength) {
-        currentMaxLength += canvasWidth * 0.05; // Ajustar longitud máxima
-      }
 
       requestAnimationFrame(drawSegment);
     };
@@ -114,12 +142,9 @@ const GrowingLines: React.FC = () => {
     ctxCircle.fill();
     ctxCircle.arc(x, y, circleRadius, 0, 2 * Math.PI);
     ctxCircle.fill();
-    ctxCircle.arc(x, y, circleRadius, 0, 2 * Math.PI);
-    ctxCircle.fill();
-
   };
 
-  
+
   const drawLinesInstantly = (
     ctx: CanvasRenderingContext2D,
     params: LineParams,
@@ -130,32 +155,60 @@ const GrowingLines: React.FC = () => {
       startX,
       startY,
       angle,
-      maxLength,
       growthSpeed,
       angleIncrement,
       maxTotalLength,
       spin = false,
       momentSpin1 = 0,
       momentSpin2 = 0,
+      momentSpin3 = 0,
       color = "white",
+      text,
+      url,
     } = params;
 
     let currentX = startX;
     let currentY = startY;
     let currentAngle = angle;
-    let currentMaxLength = maxLength;
     let totalLength = 0;
+    let textDrawn = false;
 
     while (totalLength < maxTotalLength) {
       if (spin && totalLength > canvasWidth * momentSpin1) {
         currentAngle = angleIncrement;
+        if (!textDrawn && text && url) {
+          console.log(text)
+          const textX = currentX;
+          const textY = currentY - 17;
+          const fontSize = Math.max(12, canvasWidth * 0.011);
+          setTextElements((prev) => [
+            ...prev,
+            <a
+              key={text}
+              href={url}
+              className={styles.fadeIn} 
+              style={{
+                top: `${textY}px`,
+                left: `${textX}px`,
+                fontSize: `${fontSize}px`,
+              }}
+            >
+              {text}
+            </a>,
+          ]);
+          textDrawn = true;
+        }
         if (spin && totalLength > canvasWidth * momentSpin2) {
-          currentAngle = 0;
+          currentAngle = angle;
+        }
+        if ((spin && totalLength > canvasWidth * momentSpin3) && momentSpin3 !== 0) {
+          currentAngle = -90;
         }
       }
 
-      const nextX = Math.round(currentX + growthSpeed * Math.cos(currentAngle));
-      const nextY = Math.round(currentY + growthSpeed * Math.sin(currentAngle));
+      const angleInRadians = currentAngle * (Math.PI / 180);
+      const nextX = Math.round(currentX + growthSpeed * Math.cos(angleInRadians));
+      const nextY = Math.round(currentY + growthSpeed * Math.sin(angleInRadians));
 
       ctx.strokeStyle = color;
       ctx.lineWidth = 1.7;
@@ -169,160 +222,125 @@ const GrowingLines: React.FC = () => {
       currentY = nextY;
 
       totalLength += growthSpeed;
-
-      if (Math.hypot(nextX - startX, nextY - startY) >= currentMaxLength) {
-        currentMaxLength += canvasWidth * 0.05; // Ajustar longitud máxima
-      }
     }
-    const circleRadius = 3; // Tamaño del círculo
-      // ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.save()
-      ctx.beginPath();
-      // Color sólido del círculo
-      ctx.fillStyle = "white"; 
+    const circleRadius = 3;
+    ctx.save()
+    ctx.beginPath();
+    ctx.fillStyle = "white";
 
-      // Tercera capa de sombra (brillo máximo)
-      ctx.shadowColor = "rgba(255, 255, 255, 1)"; // Máxima opacidad
-      ctx.shadowBlur = 30; // Difusión más amplia
-      ctx.arc(currentX, currentY, circleRadius, 0, 2 * Math.PI); 
-      ctx.fill();
-      ctx.arc(currentX, currentY, circleRadius, 0, 2 * Math.PI); 
-      ctx.fill();
-      ctx.arc(currentX, currentY, circleRadius, 0, 2 * Math.PI); 
-      ctx.fill();
-      ctx.arc(currentX, currentY, circleRadius, 0, 2 * Math.PI); 
-      ctx.fill();
-      ctx.arc(currentX, currentY, circleRadius, 0, 2 * Math.PI); 
-      ctx.fill();
+    // Tercera capa de sombra (brillo máximo)
+    ctx.shadowColor = "rgba(255, 255, 255, 1)"; // Máxima opacidad
+    ctx.shadowBlur = 30; // Difusión más amplia
+    ctx.arc(currentX, currentY, circleRadius, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.arc(currentX, currentY, circleRadius, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.arc(currentX, currentY, circleRadius, 0, 2 * Math.PI);
+    ctx.fill();
 
 
-      return;
+    return;
   };
 
 
   useEffect(() => {
 
     const linesCanvas = linesCanvasRef.current;
-    const circleCanvas = circleCanvasRef.current;
-    const circleCanvas2 = circleCanvasRef2.current;
-
-    if (!linesCanvas || !circleCanvas || !circleCanvas2) return;
+    if (!linesCanvas) return;
 
     const linesCtx = linesCanvas.getContext("2d");
-    const circleCtx = circleCanvas.getContext("2d");
+    if (!linesCtx) return;
 
-    const circleCtx2 = circleCanvas2.getContext("2d");
+    const circleContexts = circleCanvasRefs.current.map((canvas) => {
+      if (!canvas) return null;
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+        // Configuración inicial de cada canvas
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpiar el canvas
+      }
+      return ctx;
+    }).filter(Boolean); // Filtrar contextos nulos
 
-    if (!linesCtx || !circleCtx || !circleCtx2) return;
+    if (!circleContexts.length) return;
+
 
     const initialCanvas = () => {
       // Ajustar el tamaño de los canvas
       linesCanvas.width = window.innerWidth;
       linesCanvas.height = window.innerHeight;
 
-      circleCanvas.width = window.innerWidth;
-      circleCanvas.height = window.innerHeight;
-
-      circleCanvas2.width = window.innerWidth;
-      circleCanvas2.height = window.innerHeight;
-
       // Limpiar los canvas
       linesCtx.clearRect(0, 0, linesCanvas.width, linesCanvas.height);
-      circleCtx.clearRect(0, 0, circleCanvas.width, circleCanvas.height);
 
-      circleCtx2.clearRect(0, 0, circleCanvas.width, circleCanvas.height);
+      circleContexts.forEach((circleCtx, index) => {
+        if (!circleCtx) return;
 
-      drawLines(
-        linesCtx,
-        {
-          startX: 0,
-          startY: linesCanvas.height * 0.08,
-          angle: 0,
-          maxLength: 0,
-          growthSpeed: 1.2,
-          angleIncrement: 45, // 45 grados en radianes
-          spin: true,
-          momentSpin1: 0.1,
-          momentSpin2: 0.12,
-          maxTotalLength: linesCanvas.width * 0.2,
-        },
-        linesCanvas.width,
-        linesCanvas.height,
-        (x, y) => drawCircle(circleCtx, x, y)
-      );
+        const configEntry = configLines[index]; // Obtener datos del JSON correspondiente
+        const { startX, startY, angle, growthSpeed, angleIncrement, spin, momentSpin1, momentSpin2, momentSpin3, maxTotalLength, text, url } = configEntry;
 
-      drawLines(
-        linesCtx,
-        {
-          startX: 0,
-          startY: linesCanvas.height * 0.08,
-          angle: 0,
-          maxLength: 0,
-          growthSpeed: 1.2,
-          angleIncrement: -45, // 45 grados en radianes
-          spin: true,
-          momentSpin1: 0.058,
-          momentSpin2: 0.077,
-          maxTotalLength: linesCanvas.width * 0.11,
-        },
-        linesCanvas.width,
-        linesCanvas.height,
-        (x, y) => drawCircle(circleCtx2, x, y)
-      );
+        drawLines(
+          linesCtx,
+          {
+            startX: linesCanvas.width * startX,
+            startY: linesCanvas.height * startY,
+            angle: angle,
+            growthSpeed: growthSpeed,
+            angleIncrement: angleIncrement, // Alternar la dirección del ángulo
+            spin: spin,
+            momentSpin1: momentSpin1,
+            momentSpin2: momentSpin2,
+            momentSpin3: momentSpin3,
+            maxTotalLength: linesCanvas.width * maxTotalLength,
+            text: text,
+            url: url,
+          },
+          linesCanvas.width,
+          linesCanvas.height,
+          (x, y) => drawCircle(circleCtx, x, y) // Pasar el contexto correspondiente
+        );
+      });
     };
 
     const resizeCanvas = () => {
+      setTextElements([]); // Limpiar los elementos de texto
+
       linesCanvas.width = window.innerWidth;
       linesCanvas.height = window.innerHeight;
-
-      circleCanvas.width = window.innerWidth;
-      circleCanvas.height = window.innerHeight;
 
       // Limpiar los canvas
       linesCtx.clearRect(0, 0, linesCanvas.width, linesCanvas.height);
-      circleCtx.clearRect(0, 0, circleCanvas.width, circleCanvas.height);
-      circleCtx2.clearRect(0, 0, circleCanvas.width, circleCanvas.height);
 
-      // Ajustar el tamaño del canvas
-      linesCanvas.width = window.innerWidth;
-      linesCanvas.height = window.innerHeight;
+      circleContexts.forEach((circleCtx, index) => {
+        if (!circleCtx) return;
 
-      // Dibujar líneas adaptadas al nuevo tamaño
-      drawLinesInstantly(
-        linesCtx,
-        {
-          startX: 0,
-          startY: linesCanvas.height * 0.08,
-          angle: 0,
-          maxLength: 0,
-          growthSpeed: 1.2,
-          angleIncrement: 45, // 45 grados en radianes
-          spin: true,
-          momentSpin1: 0.1,
-          momentSpin2: 0.12,
-          maxTotalLength: linesCanvas.width * 0.2,
-        },
-        linesCanvas.width,
-        // canvas.height
-      );
+        circleCtx.clearRect(0, 0, circleCtx.canvas.width, circleCtx.canvas.height);
 
-      drawLinesInstantly(
-        linesCtx,
-        {
-          startX: 0,
-          startY: linesCanvas.height * 0.08,
-          angle: 0,
-          maxLength: 0,
-          growthSpeed: 1.2,
-          angleIncrement: -45, // 45 grados en radianes
-          spin: true,
-          momentSpin1: 0.058,
-          momentSpin2: 0.077,
-          maxTotalLength: linesCanvas.width * 0.11,
-        },
-        linesCanvas.width,
-        // canvas.height
-      );
+        const configEntry = configLines[index]; // Obtener datos del JSON correspondiente
+        const { startX, startY, angle, growthSpeed, angleIncrement, spin, momentSpin1, momentSpin2, momentSpin3, maxTotalLength, text, url } = configEntry;
+
+        drawLinesInstantly(
+          linesCtx,
+          {
+            startX: linesCanvas.width * startX,
+            startY: linesCanvas.height * startY,
+            angle: angle,
+            growthSpeed: growthSpeed,
+            angleIncrement: angleIncrement, // Alternar la dirección del ángulo
+            spin: spin,
+            momentSpin1: momentSpin1,
+            momentSpin2: momentSpin2,
+            momentSpin3: momentSpin3,
+            maxTotalLength: linesCanvas.width * maxTotalLength,
+            text: text,
+            url: url,
+          },
+          linesCanvas.width,
+          //linesCanvas.height,
+          //(x, y) => drawCircle(circleCtx, x, y) // Pasar el contexto correspondiente
+        );
+      });
     };
     // Configurar canvas inicial
     initialCanvas();
@@ -348,26 +366,24 @@ const GrowingLines: React.FC = () => {
         }}
       />
       {/* Canvas para círculos */}
-      <canvas
-        ref={circleCanvasRef}
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          zIndex: 2,
-          pointerEvents: "none", // Evitar interferencias con interacciones
-        }}
-      />
-      <canvas
-        ref={circleCanvasRef2}
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          zIndex: 2,
-          pointerEvents: "none", // Evitar interferencias con interacciones
-        }}
-      />
+      {configLines.map((item, index) => (
+        <canvas
+          key={index}
+          ref={(el) => {
+            // Vincular el canvas al índice correspondiente
+            circleCanvasRefs.current[index] = el;
+          }}
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            zIndex: 2,
+            pointerEvents: "none", // Evitar interferencias con interacciones
+          }}
+        />
+        
+      ))}
+      {textElements}
     </div>
   );
 };
