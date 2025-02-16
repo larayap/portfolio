@@ -30,7 +30,9 @@
         "spin": true,
         "momentSpin1": 0.01,
         "momentSpin2": 0.035,
-        "maxTotalLength": 0.06
+        "maxTotalLength": 0.06,
+        "text": "cv",
+        "url": "#home"
     },
 
     {
@@ -175,7 +177,9 @@
         "momentSpin1": 0.013,
         "momentSpin2": 0.025,
         "momentSpin3": 0.042,
-        "maxTotalLength": 0.08
+        "maxTotalLength": 0.08,
+        "text": "l.arayapardo.dev@gmail.com",
+        "url": "mailto:l.arayapardo.dev@gmail.com"
     },
 
     {
@@ -210,6 +214,7 @@
         "momentSpin1": 0.013,
         "momentSpin2": 0.025,
         "momentSpin3": 0.042,
-        "maxTotalLength": 0.08
+        "maxTotalLength": 0.08,
+        "url": "linkedin&github"
     }
 ]

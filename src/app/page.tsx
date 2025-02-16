@@ -1,8 +1,9 @@
 import Head from 'next/head';
 import FuturisticLines from '@/components/FuturisticLines';
-import About from '@/components/about';
+import Home from '@/components/Home';
+import About from '@/components/About';
 
-const Home: React.FC = () => {
+const Main: React.FC = () => {
   return (
     <>
       <Head>
@@ -12,21 +13,26 @@ const Home: React.FC = () => {
       </Head>
       <main style={{ margin: 0, overflowX: 'hidden', background: 'black' }}>
         {/* Líneas futuristas como barra de navegación */}
-        <section style={{ position: 'fixed', zIndex: 100 }}>
+        <section style={{ position: 'fixed' }}>
           <FuturisticLines />
         </section>
 
         {/* Primera Sección */}
-        <section id="home" style={{ height: '100vh', color: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <About />
+        <section id="home" style={{ height: '100vh', color: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 100 }}>
+          <Home />
         </section>
 
         {/* Segunda Sección */}
-        <section id="aboutme" style={{ height: '100vh', background: 'linear-gradient(to bottom, #1a1a1a, #333)', color: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <h2>Acerca de Nosotros</h2>
+        <section id="aboutme" style={{ height: '100vh', color: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 100 }}>
+          <About />
         </section>
 
         {/* Tercera Sección */}
+        <section id="projects" style={{ height: '100vh', color: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 100 }}>
+          <h2>Proyecto</h2>
+        </section>
+        
+        {/* Cuarta Sección */}
         <section id="contact" style={{ height: '100vh', background: 'black', color: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <h2>Contacto</h2>
         </section>
@@ -35,4 +41,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default Main;

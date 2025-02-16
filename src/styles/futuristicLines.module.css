@@ -25,3 +25,21 @@
   .fadeIn:hover {
     text-shadow: 0 0 5px rgba(255, 255, 255, 1), 0 0 15px rgba(255, 255, 255, 1);
   }
+
+  .fadeIn svg:hover {
+    transform: scale(1.1); /* Aumentar tamaño del ícono al pasar el ratón */
+    transition: transform .5s; /* Transición suave para el escalado */
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 1)); /* Efecto de sombra */
+  }
+
+  .delayAnimation {
+    animation-delay: .3s;
+  }
+
+  .verticalText {
+    writing-mode: vertical-rl; /* Escribir verticalmente de derecha a izquierda */
+    transform: rotate(90); /* Opcional: invertir la dirección si quieres que vaya hacia arriba */
+    font-family: 'Anonymous Pro', sans-serif;
+    color: white;
+  }
+  

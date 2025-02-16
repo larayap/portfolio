@@ -1,0 +1,159 @@
+.textCarousel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    position: relative; /* Necesario para los pseudo-elementos */
+    width: 65%;
+    height: 59%;
+    min-width: 300px;
+    max-width: 1100px;
+  }
+
+  .cornerBottomRight {
+    display: flex;
+    flex-direction: column;
+    position: relative; /* Necesario para los pseudo-elementos */
+    width: 100%;
+    height: 100%;
+  }
+  
+  .titles {
+    display: flex;
+    gap: 15px;
+    cursor: pointer;
+    font-size: 2em;
+    font-family: 'Aquire', sans-serif;
+    justify-content: space-between;
+    flex: 0 0 auto;
+  }
+  
+  .title {
+    padding: 15px 25px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    text-decoration: underline;
+    text-decoration-color: transparent; /* Empieza "invisible" */
+    text-underline-offset: 12px;        /* Más abajo */
+    transition: text-decoration-color 0.8s ease; /* 0.6s como ejemplo */
+  }
+  
+  .title.active {
+    text-decoration-color: #fff; /* Al hacer clic, aparece poco a poco */
+    text-shadow: 0 0 5px rgba(255, 255, 255, 1);
+  }
+  
+  .content {
+    position: relative; 
+    flex: 1 1 auto;
+    overflow-y: auto;
+    box-sizing: border-box;
+    padding: 10px;
+    margin: 20px 20px 30px;
+    z-index: 2;
+    justify-content: justify;
+    text-align: justify;
+  }
+
+  .contentDiv {
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 1px;
+    font-size: 1.15em;
+  }
+  
+  .animatedLineHorizontal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 2px;
+    background: white;
+    transform-origin: left top;
+  }
+  
+  .animatedLineVertical {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2px;
+    background: white;
+    transform-origin: top center;
+    height: 0;
+  }
+
+  .animatedLineHorizontalOpp {
+    position: absolute;
+    bottom: 0;
+    height: 2px;
+    background: white;
+    transform-origin: left top;
+  }
+
+  .animatedLineVerticalOpp {
+    position: absolute;
+    bottom: 0;
+    width: 2px;
+    background: white;
+    transform-origin: top center;
+    height: 0;
+  }
+ 
+  .content ul {
+    list-style: none; /* quitamos el estilo por defecto */
+    padding-left: 2em; /* sangría para el texto */
+    margin: 0;
+  }
+  
+  .content ul li {
+    position: relative;
+    font-size: 0.9em;
+    margin-bottom: 0.2em; /* espacio entre elementos, ajustable */
+  }
+  
+  .content ul li::before {
+    content: "-"; /* el guion */
+    position: absolute;
+    left: -1em;  /* desplaza el guion hacia la izquierda */
+  }
+  
+  :global(.company) {
+    font-size: 1.3em; /* Hace que el nombre de la empresa se vea más grande */
+    font-weight: bold;
+  }
+  
+  :global(.job) {
+    font-size: 0.9em;
+    color: #777;   /* Un tono gris para el rol y las fechas */
+    margin-left: 0.5em; /* Separación si lo deseas */
+  }
+  
+  .techGrid {
+    display: flex;
+    flex-wrap: wrap;       /* Permite que las tarjetas hagan “salto de línea” */
+    gap: 1.5rem;             /* Espacio entre tarjetas */
+    row-gap: 3rem;
+    justify-content: center; /* Centra todos los elementos en la fila */
+    align-items: center;   /* Centra verticalmente (si tienen distintas alturas) */
+    margin: 0 auto;        /* Centra el contenedor en el padre */
+  }
+  
+  
+  .techCard {
+    background: #1a1a1a;
+    text-align: center;
+    justify-content: center;
+    padding: 0.8rem 1.1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .techCard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+  }
+  
+  .icon {
+    font-size: 5rem;
+    margin-bottom: 0.5rem;
+  }
+

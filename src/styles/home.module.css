@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    gap: 20px;
+    width: 50%;
+  }
+  
+.textContainer {
+  width: 60%;
+  font-size: 1rem;
+}
+
+.image {
+  width: 50%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.open {
+    font-size: 1.8rem;
+    color: rgb(219, 218, 218);
+}
+
+.header {
+    font-size: 3.3rem;
+    font-weight: 100;
+    margin: 0;
+    line-height: 1.1;
+    font-family: "Russo One", sans-serif;
+    white-space: nowrap;
+}
+
+.subheader {
+   font-size: 1.6rem;
+   font-weight: bold;
+   color: rgb(168, 163, 163);
+   letter-spacing: 0.11em;
+}
+
+.text {
+    margin-top: 10px;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: rgb(102, 99, 99);
+    line-height: 1.5;
+    font-style: italic;
+}
+
+
+@media (max-width: 1244px) {
+  .container {
+    flex-direction: column; /* Cambia la dirección de los elementos */
+    width: 100%; /* Reduce el ancho del contenedor */
+    text-align: center;
+  }
+  .textContainer {
+    width: 100%;
+  }
+  .header {
+    font-size: 3rem; /* Reduce el tamaño del título */
+    white-space: nowrap;
+  }
+
+  .open,
+  .subheader {
+    font-size: 1.7rem; /* Reduce los subtítulos */
+  }
+
+  .text {
+    font-size: 1.4rem; /* Reduce el tamaño del párrafo */
+  }
+
+  .image {
+    width: 250px; /* Reduce el tamaño de la imagen */
+  }
+
+  .container {
+    padding: 30px; /* Añade espacio interior */
+  }
+}
+/* Responsividad */
+@media (max-width: 768px) {
+  .header {
+    font-size: 2.5rem; /* Reduce el tamaño del título */
+  }
+
+  .open,
+  .subheader {
+    font-size: 1.2rem; /* Reduce los subtítulos */
+  }
+
+  .text {
+    font-size: 0.9rem; /* Reduce el tamaño del párrafo */
+  }
+
+  .image {
+    width: 200px; /* Reduce el tamaño de la imagen */
+  }
+
+  .container {
+    padding: 20px; /* Añade espacio interior */
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    font-size: 2rem;
+  }
+
+  .open,
+  .subheader {
+    font-size: 1rem;
+  }
+
+  .text {
+    font-size: 0.8rem;
+  }
+
+  .image {
+    width: 150px;
+  }
+}
