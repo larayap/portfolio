@@ -1,0 +1,267 @@
+.projectsSection {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.titleContainer {
+    position: relative;
+    background-color: black;
+    padding: 3px;
+    margin-bottom: 8px;
+    z-index: 10;
+    margin-top: 80px;
+}
+.title {
+    font-size: 3em;
+    margin: 0;
+    font-family: "Aquire", sans-serif;
+    font-weight: bold;
+    color: #fff;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+}
+.title.visible {
+    opacity: 1;
+  }
+/* Línea central que crece con el scroll */
+.centralLine {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform-origin: top;
+    width: 2px;
+    background: linear-gradient(to bottom, #000, #fff);
+    height: 100%;
+    transform: scaleY(0);
+    transition: transform 0.3s ease-out;
+}
+
+/* Estilos para cada cuadro de proyecto */
+.projectBox {
+    position: absolute;
+    width: 250px;
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid #fff;
+    border-radius: 8px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+/* Clase para mostrar el cuadro cuando se cumple el trigger */
+.projectBox.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Posición a la izquierda */
+.left {
+    /* Se ubica a la izquierda de la línea central:
+       - Se le resta el ancho del cuadro (250px) y el margen deseado (20px) */
+    left: calc(50% - 250px - 90px);
+  }
+  
+.right {
+    /* Se ubica a la derecha de la línea central, con un margen de 20px */
+    left: calc(50% + 90px);
+}
+  
+/* Si deseas, puedes usar media queries para adaptar aún más el diseño en pantallas muy angostas */
+@media (max-width: 600px) {
+    .projectBox {
+      width: calc(100% - 40px); /* Por ejemplo, para que se adapte mejor */
+    }
+    .left,
+    .right {
+      left: 20px; /* O ajusta según tus necesidades */
+    }
+    .centralLine {
+      left: 30px; /* Ajusta la posición de la línea si lo requieres */
+    }
+}
+
+/* Estilos para la imagen del proyecto */
+.projectImage {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+/* Overlay que se muestra al pasar el cursor sobre la imagen */
+.imageOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    color: #fff;
+    font-size: 1.2em;
+    text-decoration: none;
+    transition: opacity 0.5s ease;
+}
+.imageContainer {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Se muestra el overlay al hacer hover */
+.imageContainer:hover .imageOverlay {
+  opacity: 1;
+}
+
+/* Estilo para el icono de GitHub junto al título */
+.githubIcon {
+  font-size: 1.4em;
+  margin-left: 10px;
+  color: #fff;
+  transition: color 0.3s ease;
+}
+
+.githubIcon:hover {
+  color: #ccc;
+}
+
+.imageContainer:hover .projectImage {
+    transform: scale(1.1);
+    filter: blur(1px);
+}
+
+/* Estilo para el título del proyecto */
+.projectTitle {
+    font-size: 1.3em;
+    margin-bottom: 5px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: bold;
+  }  
+
+/* Estilo para las tecnologías utilizadas en el proyecto */
+.projectTech {
+    font-size: 0.9em;
+    color: #ddd;
+}
+
+
+/* Versión Mobile */
+.projectsSectionMobile {
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  background: #000;
+  color: #fff;
+  position: relative;
+}
+
+.titleContainerMobile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Puedes fijar una altura para centrar verticalmente el título */
+  height: 80px;
+  margin-bottom: 20px;
+  background-color: black;
+  z-index: 10;
+  padding: 0;
+  position: relative;
+}
+
+.titleMobile {
+  font-family: "Aquire", sans-serif;
+  font-size: 2em;
+  text-align: center;
+}
+
+.centralLineMobile {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform-origin: top;
+  width: 2px;
+  background: linear-gradient(to bottom, #000, #fff);
+  height: 100%;
+  transform: scaleY(0);
+  transition: transform 0.3s ease-out;
+}
+
+.projectsList {
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  position: relative;
+  z-index: 1; /* Para que los proyectos se muestren sobre la línea */
+}
+
+/* Estilos para los proyectos en mobile */
+.projectBoxMobile {
+  background: #1a1a1a;
+  padding: 15px;
+  border-radius: 8px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.imageContainerMobile {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.projectImageMobile {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 5px;
+}
+
+.imageOverlayMobile {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,0.5);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  color: #fff;
+  text-decoration: none;
+}
+
+.imageContainerMobile:hover .imageOverlayMobile {
+  opacity: 1;
+}
+
+.projectTitleMobile {
+  font-size: 1.3em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
+}
+
+.githubIconMobile {
+  margin-left: 10px;
+  color: #fff;
+}
+
+.projectTechMobile {
+  font-size: 0.9em;
+  color: #ccc;
+  margin: 0;
+}

@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import styles from "../styles/home.module.css"; // Importa el archivo CSS
-import img from '../app/pngegg.png'; // Importa la imagen
+import img from '../app/me.png'; // Importa la imagen
 
 const Home: React.FC = () => {
   return (

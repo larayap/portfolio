@@ -13,7 +13,7 @@ interface LineParams {
   growthSpeed: number; // Velocidad de crecimiento
   angleIncrement: number; // Incremento del ángulo
   maxTotalLength: number; // Longitud total máxima
-  spin?: boolean; // Gira?
+  spin?: boolean; // ¿Gira?
   momentSpin1?: number;
   momentSpin2?: number;
   momentSpin3?: number;
@@ -26,19 +26,19 @@ const GrowingLines: React.FC = () => {
   const linesCanvasRef = useRef<HTMLCanvasElement | null>(null);
   const circleCanvasRefs = useRef<(HTMLCanvasElement | null)[]>([]);
   const [textElements, setTextElements] = useState<JSX.Element[]>([]);
-  // Ref para almacenar el ID de requestAnimationFrame
+  // Ref para guardar el id de requestAnimationFrame
   const animationFrameId = useRef<number | null>(null);
+  // Ref para controlar la versión del dibujo. Cada vez que se inicia un nuevo dibujo se incrementa.
+  const versionRef = useRef(0);
 
-  // Aseguramos que el arreglo de refs tenga la cantidad de elementos de títulos
-  // (si es que existiera alguna referencia a elementos de texto, en este caso no es necesario)
-  
-  // Función que dibuja las líneas de forma progresiva usando requestAnimationFrame
+  // Función para dibujar las líneas de forma progresiva
   const drawLines = (
     ctx: CanvasRenderingContext2D,
     params: LineParams,
     canvasWidth: number,
     canvasHeight: number,
-    onPointUpdate: (x: number, y: number) => void
+    onPointUpdate: (x: number, y: number) => void,
+    drawVersion: number // Versión del dibujo actual
   ) => {
     const {
       startX,
@@ -62,82 +62,85 @@ const GrowingLines: React.FC = () => {
     let totalLength = 0;
     let textDrawn = false;
 
-    // Calculamos el ángulo de rotación de acuerdo al aspect ratio de la pantalla
     const aspect = window.innerWidth / window.innerHeight;
     const multiplier = -0.02 * aspect + 1.0;
     const multiplierMail = -0.02 * aspect + 0.88;
-    console.log(multiplierMail)
+
     const drawSegment = () => {
       if (totalLength >= maxTotalLength) {
-        // Si se completó el trazo, dibuja los textos correspondientes
+        // Al terminar el trazo, agregamos los elementos de texto si la versión coincide
         if (url === "linkedin&github") {
           const fontSize = Math.max(12, canvasWidth * 0.02);
           const textX = currentX;
           const textY = currentY * multiplier;
-
-          setTextElements((prev) => [
-            ...prev,
-            <a
-              key={`linkedin-${textX}`}
-              href={'https://www.linkedin.com/in/luis-alberto-araya-pardo-38308518/'}
-              className={styles.fadeIn}
-              style={{
-                top: `${textY}px`,
-                left: `${textX}px`,
-                fontSize: `${fontSize}px`,
-              }}
-            >
-              {<AiFillLinkedin />}
-            </a>,
-            <a
-              key={`github-${textY}`}
-              href={'https://github.com/Flacamasu'}
-              className={`${styles.fadeIn} ${styles.delayAnimation}`}
-              style={{
-                top: `${textY - fontSize - 5}px`,
-                left: `${textX}px`,
-                fontSize: `${fontSize}px`,
-              }}
-            >
-              {<AiFillGithub />}
-            </a>,
-          ]);
+          if (versionRef.current === drawVersion) {
+            setTextElements((prev) => [
+              ...prev,
+              <a
+                key={`linkedin-${textX}-${drawVersion}`}
+                href="https://www.linkedin.com/in/luis-alberto-araya-pardo-38308518/"
+                className={styles.fadeIn}
+                style={{
+                  top: `${textY}px`,
+                  left: `${textX}px`,
+                  fontSize: `${fontSize}px`,
+                }}
+              >
+                <AiFillLinkedin />
+              </a>,
+              <a
+                key={`github-${textY}-${drawVersion}`}
+                href="https://github.com/Flacamasu"
+                className={`${styles.fadeIn} ${styles.delayAnimation}`}
+                style={{
+                  top: `${textY - fontSize - 5}px`,
+                  left: `${textX}px`,
+                  fontSize: `${fontSize}px`,
+                }}
+              >
+                <AiFillGithub />
+              </a>,
+            ]);
+          }
         }
         if (text === "l.arayapardo.dev@gmail.com") {
           const fontSize = Math.max(12, canvasWidth * 0.008);
           const textX = currentX;
           const textY = currentY * multiplierMail;
-          setTextElements((prev) => [
-            ...prev,
-            <a
-              key={text}
-              href={url}
-              className={`${styles.fadeIn} ${styles.verticalText}`}
-              style={{
-                top: `${textY}px`,
-                left: `${textX}px`,
-                fontSize: `${fontSize}px`,
-              }}
-            >
-              {text}
-            </a>,
-          ]);
+          if (versionRef.current === drawVersion) {
+            setTextElements((prev) => [
+              ...prev,
+              <a
+                key={`${text}-${drawVersion}`}
+                href={url}
+                className={`${styles.fadeIn} ${styles.verticalText}`}
+                style={{
+                  top: `${textY}px`,
+                  left: `${textX}px`,
+                  fontSize: `${fontSize}px`,
+                }}
+              >
+                {text}
+              </a>,
+            ]);
+          }
           textDrawn = true;
         }
         return;
       }
 
+      // Cambiamos el ángulo según el valor de spin y los momentos
       if (spin && totalLength > canvasWidth * momentSpin1) {
         currentAngle = angleIncrement;
         if (!textDrawn && text && url && text !== "l.arayapardo.dev@gmail.com") {
           const textX = currentX;
           const textY = currentY * 0.7;
           const fontSize = Math.max(12, canvasWidth * 0.011);
-          if (text !== "cv") {
+          if (versionRef.current === drawVersion && text !== "cv") {
             setTextElements((prev) => [
               ...prev,
               <a
-                key={text}
+                key={`${text}-${drawVersion}`}
                 href={url}
                 className={styles.fadeIn}
                 style={{
@@ -154,21 +157,23 @@ const GrowingLines: React.FC = () => {
           if (text === "cv") {
             const textX = currentX * 2.6;
             const textY = currentY * 0.55;
-            setTextElements((prev) => [
-              ...prev,
-              <a
-                key={text}
-                href={url}
-                className={styles.fadeIn}
-                style={{
-                  top: `${textY}px`,
-                  left: `${textX}px`,
-                  fontSize: `${Math.max(12, canvasWidth * 0.03)}px`,
-                }}
-              >
-                {<TbFileCv style={{ fontSize: Math.max(12, canvasWidth * 0.03) }} />}
-              </a>,
-            ]);
+            if (versionRef.current === drawVersion ) {
+              setTextElements((prev) => [
+                ...prev,
+                <a
+                  key={`${text}-${drawVersion}-cv`}
+                  href={url}
+                  className={styles.fadeIn}
+                  style={{
+                    top: `${textY}px`,
+                    left: `${textX}px`,
+                    fontSize: `${Math.max(12, canvasWidth * 0.03)}px`,
+                  }}
+                >
+                  <TbFileCv style={{ fontSize: Math.max(12, canvasWidth * 0.03) }} />
+                </a>,
+              ]);
+            }
           }
         }
         if (spin && totalLength > canvasWidth * momentSpin2) {
@@ -179,6 +184,7 @@ const GrowingLines: React.FC = () => {
         }
       }
 
+      // Dibujamos el segmento
       const angleInRadians = currentAngle * (Math.PI / 180);
       const nextX = Math.round(currentX + growthSpeed * Math.cos(angleInRadians));
       const nextY = Math.round(currentY + growthSpeed * Math.sin(angleInRadians));
@@ -196,14 +202,15 @@ const GrowingLines: React.FC = () => {
       currentY = nextY;
       totalLength += growthSpeed;
 
-      // Guardamos el ID del frame para poder cancelarlo en resize
-      animationFrameId.current = requestAnimationFrame(drawSegment);
+      if (versionRef.current === drawVersion) {
+        animationFrameId.current = requestAnimationFrame(drawSegment);
+      }
     };
 
     drawSegment();
   };
 
-  // Función que dibuja el círculo
+  // Función para dibujar el círculo
   const drawCircle = (
     ctxCircle: CanvasRenderingContext2D,
     x: number,
@@ -217,19 +224,14 @@ const GrowingLines: React.FC = () => {
     ctxCircle.shadowBlur = 30;
     ctxCircle.arc(x, y, circleRadius, 0, 2 * Math.PI);
     ctxCircle.fill();
-    ctxCircle.arc(x, y, circleRadius, 0, 2 * Math.PI);
-    ctxCircle.fill();
-    ctxCircle.arc(x, y, circleRadius, 0, 2 * Math.PI);
-    ctxCircle.fill();
-    ctxCircle.arc(x, y, circleRadius, 0, 2 * Math.PI);
-    ctxCircle.fill();
   };
 
   // Función para dibujar las líneas de forma instantánea (usada en resize)
   const drawLinesInstantly = (
     ctx: CanvasRenderingContext2D,
     params: LineParams,
-    canvasWidth: number
+    canvasWidth: number,
+    drawVersion: number
   ) => {
     const {
       startX,
@@ -263,11 +265,11 @@ const GrowingLines: React.FC = () => {
           const textX = currentX;
           const textY = currentY - 17;
           const fontSize = Math.max(12, canvasWidth * 0.011);
-          if (text !== "cv") {
+          if (versionRef.current === drawVersion && text !== "cv") {
             setTextElements((prev) => [
               ...prev,
               <a
-                key={text}
+                key={`${text}-${drawVersion}`}
                 href={url}
                 className={styles.fadeIn}
                 style={{
@@ -284,21 +286,23 @@ const GrowingLines: React.FC = () => {
           if (text === "cv") {
             const textX = currentX * 2.6;
             const textY = currentY * 0.55;
-            setTextElements((prev) => [
-              ...prev,
-              <a
-                key={text}
-                href={url}
-                className={styles.fadeIn}
-                style={{
-                  top: `${textY}px`,
-                  left: `${textX}px`,
-                  fontSize: `${Math.max(12, canvasWidth * 0.03)}px`,
-                }}
-              >
-                {<TbFileCv style={{ fontSize: Math.max(12, canvasWidth * 0.03) }} />}
-              </a>,
-            ]);
+            if (versionRef.current === drawVersion) {
+              setTextElements((prev) => [
+                ...prev,
+                <a
+                  key={`${text}-${drawVersion}-cv`}
+                  href={url}
+                  className={styles.fadeIn}
+                  style={{
+                    top: `${textY}px`,
+                    left: `${textX}px`,
+                    fontSize: `${Math.max(12, canvasWidth * 0.03)}px`,
+                  }}
+                >
+                  <TbFileCv style={{ fontSize: Math.max(12, canvasWidth * 0.03) }} />
+                </a>,
+              ]);
+            }
           }
         }
         if (spin && totalLength > canvasWidth * momentSpin2) {
@@ -324,6 +328,7 @@ const GrowingLines: React.FC = () => {
       currentY = nextY;
       totalLength += growthSpeed;
     }
+    // Dibujar el círculo final
     const circleRadius = 3;
     ctx.save();
     ctx.beginPath();
@@ -332,66 +337,62 @@ const GrowingLines: React.FC = () => {
     ctx.shadowBlur = 30;
     ctx.arc(currentX, currentY, circleRadius, 0, 2 * Math.PI);
     ctx.fill();
-    ctx.arc(currentX, currentY, circleRadius, 0, 2 * Math.PI);
-    ctx.fill();
-    ctx.arc(currentX, currentY, circleRadius, 0, 2 * Math.PI);
-    ctx.fill();
-    ctx.arc(currentX, currentY, circleRadius, 0, 2 * Math.PI);
-    ctx.fill();
     if (url === "linkedin&github") {
       const fontSize = Math.max(12, canvasWidth * 0.02);
       const textX = currentX;
       const textY = currentY * multiplier;
-      setTextElements((prev) => [
-        ...prev,
-        <a
-          key={`linkedin-${textX}`}
-          href={'https://www.linkedin.com/in/luis-alberto-araya-pardo-38308518/'}
-          className={styles.fadeIn}
-          style={{
-            top: `${textY}px`,
-            left: `${textX}px`,
-            fontSize: `${fontSize}px`,
-          }}
-        >
-          {<AiFillLinkedin />}
-        </a>,
-        <a
-          key={`github-${textY}`}
-          href={'https://github.com/Flacamasu'}
-          className={`${styles.fadeIn} ${styles.delayAnimation}`}
-          style={{
-            top: `${textY - fontSize - 5}px`,
-            left: `${textX}px`,
-            fontSize: `${fontSize}px`,
-          }}
-        >
-          {<AiFillGithub />}
-        </a>,
-      ]);
+      if (versionRef.current === drawVersion) {
+        setTextElements((prev) => [
+          ...prev,
+          <a
+            key={`linkedin-${textX}-${drawVersion}`}
+            href="https://www.linkedin.com/in/luis-alberto-araya-pardo-38308518/"
+            className={styles.fadeIn}
+            style={{
+              top: `${textY}px`,
+              left: `${textX}px`,
+              fontSize: `${fontSize}px`,
+            }}
+          >
+            <AiFillLinkedin />
+          </a>,
+          <a
+            key={`github-${textY}-${drawVersion}`}
+            href="https://github.com/Flacamasu"
+            className={`${styles.fadeIn} ${styles.delayAnimation}`}
+            style={{
+              top: `${textY - fontSize - 5}px`,
+              left: `${textX}px`,
+              fontSize: `${fontSize}px`,
+            }}
+          >
+            <AiFillGithub />
+          </a>,
+        ]);
+      }
     }
     if (text === "l.arayapardo.dev@gmail.com") {
       const fontSize = Math.max(12, canvasWidth * 0.008);
       const textX = currentX;
       const textY = currentY * multiplierMail;
-      setTextElements((prev) => [
-        ...prev,
-        <a
-          key={text}
-          href={url}
-          className={`${styles.fadeIn} ${styles.verticalText}`}
-          style={{
-            top: `${textY}px`,
-            left: `${textX}px`,
-            fontSize: `${fontSize}px`,
-          }}
-        >
-          {text}
-        </a>,
-      ]);
-      textDrawn = true;
+      if (versionRef.current === drawVersion) {
+        setTextElements((prev) => [
+          ...prev,
+          <a
+            key={`${text}-${drawVersion}`}
+            href={url}
+            className={`${styles.fadeIn} ${styles.verticalText}`}
+            style={{
+              top: `${textY}px`,
+              left: `${textX}px`,
+              fontSize: `${fontSize}px`,
+            }}
+          >
+            {text}
+          </a>,
+        ]);
+      }
     }
-    return;
   };
 
   useEffect(() => {
@@ -415,14 +416,17 @@ const GrowingLines: React.FC = () => {
 
     if (!circleContexts.length) return;
 
+    // Iniciamos una nueva versión para este dibujo
+    versionRef.current++;
+    const currentVersion = versionRef.current;
+
     const initialCanvas = () => {
-      // Configuramos el tamaño de los canvas
+      // Configuramos los canvas y limpiamos
       linesCanvas.width = window.innerWidth;
       linesCanvas.height = window.innerHeight;
       linesCtx.clearRect(0, 0, linesCanvas.width, linesCanvas.height);
 
       circleContexts.forEach((circleCtx, index) => {
-        if (!circleCtx) return;
         const configEntry = configLines[index];
         const { startX, startY, angle, growthSpeed, angleIncrement, spin, momentSpin1, momentSpin2, momentSpin3, maxTotalLength, text, url } = configEntry;
         drawLines(
@@ -443,20 +447,20 @@ const GrowingLines: React.FC = () => {
           },
           linesCanvas.width,
           linesCanvas.height,
-          (x, y) => drawCircle(circleCtx, x, y)
+          (x, y) => circleCtx && drawCircle(circleCtx, x, y),
+          currentVersion
         );
       });
     };
 
     const resizeCanvas = () => {
-      // Al redimensionar, limpiamos los elementos de texto
+      // Al redimensionar, limpiamos los elementos de texto y cancelamos animaciones anteriores
       setTextElements([]);
-      // Cancelamos la animación en curso, si existe
+      versionRef.current++; // Incrementamos la versión para invalidar callbacks antiguos
       if (animationFrameId.current !== null) {
         cancelAnimationFrame(animationFrameId.current);
         animationFrameId.current = null;
       }
-      // Actualizamos los tamaños de los canvas
       linesCanvas.width = window.innerWidth;
       linesCanvas.height = window.innerHeight;
       linesCtx.clearRect(0, 0, linesCanvas.width, linesCanvas.height);
@@ -482,7 +486,8 @@ const GrowingLines: React.FC = () => {
             text: text,
             url: url,
           },
-          linesCanvas.width
+          linesCanvas.width,
+          versionRef.current
         );
       });
     };

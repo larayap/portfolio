@@ -9,10 +9,6 @@
   font-style: normal;
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -59,3 +55,13 @@ canvas {
   pointer-events: none; /* Evita que intercepte eventos de clic */
 }
 
+.company{
+  font-size: 1.3em; /* Hace que el nombre de la empresa se vea más grande */
+  font-weight: bold;
+}
+
+.job {
+  font-size: 0.9em;
+  color: #777;   /* Un tono gris para el rol y las fechas */
+  margin-left: 0.5em; /* Separación si lo deseas */
+}

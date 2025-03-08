@@ -14,10 +14,10 @@
   font-size: 1rem;
 }
 
-.image {
-  width: 50%;
-  height: auto;
-  border-radius: 10px;
+.image {     /* Define un ancho fijo */
+  height: 400px;       /* Asegura que la altura sea igual al ancho */
+  border-radius: 50%;  /* Esto convierte la imagen en un círculo */
+  object-fit: cover;
 }
 
 .open {
@@ -51,7 +51,7 @@
 }
 
 
-@media (max-width: 1244px) {
+@media (max-width: 1100px) {
   .container {
     flex-direction: column; /* Cambia la dirección de los elementos */
     width: 100%; /* Reduce el ancho del contenedor */
@@ -75,7 +75,7 @@
   }
 
   .image {
-    width: 250px; /* Reduce el tamaño de la imagen */
+    height: 250px; /* Reduce el tamaño de la imagen */
   }
 
   .container {
@@ -98,29 +98,10 @@
   }
 
   .image {
-    width: 200px; /* Reduce el tamaño de la imagen */
+    height: 200px; /* Reduce el tamaño de la imagen */
   }
 
   .container {
     padding: 20px; /* Añade espacio interior */
-  }
-}
-
-@media (max-width: 480px) {
-  .header {
-    font-size: 2rem;
-  }
-
-  .open,
-  .subheader {
-    font-size: 1rem;
-  }
-
-  .text {
-    font-size: 0.8rem;
-  }
-
-  .image {
-    width: 150px;
   }
 }

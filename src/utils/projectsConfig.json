@@ -1,0 +1,25 @@
+[
+    {
+      "image": "/portfolio.png",
+      "title": "Portafolio",
+      "technologies": ["React", "TypeScript", "Next", "CSS"],
+      "link": "/",
+      "github": "https://github.com/Flacamasu/portfolio"
+    },
+    
+    {
+      "image": "/portfolio.png",
+      "title": "Portafolio",
+      "technologies": ["React", "TypeScript", "Next", "CSS"],
+      "link": "/",
+      "github": "https://github.com/Flacamasu/portfolio"
+    },
+    {
+      "image": "/portfolio.png",
+      "title": "Portafolio",
+      "technologies": ["React", "TypeScript", "Next", "CSS"],
+      "link": "/",
+      "github": "https://github.com/Flacamasu/portfolio"
+    }
+  ]
+  

@@ -1,0 +1,85 @@
+.mobileNavbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  pointer-events: none;
+}
+
+.navLeft,
+.navRight {
+  display: flex;
+  align-items: center;
+}
+
+.cvLink {
+  color: #ffffff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.cvLink:hover {
+  color: #ffcc00; /* Sutil cambio de color al pasar el mouse */
+}
+
+.menuButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  transition: color 0.3s ease;
+  pointer-events: auto;
+}
+
+.menuOverlay {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #1e1e1e; /* Fondo oscuro para el menú */
+  width: 200px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+  border-radius: 4px;
+  overflow: hidden;
+  opacity: 0;
+  animation: fadeIn 0.3s forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+.menuList {
+  list-style: none;
+  margin: 0;
+  padding: 1rem;
+  pointer-events: auto;
+}
+
+.menuList li {
+  margin-bottom: 1rem;
+}
+
+.menuList li:last-child {
+  margin-bottom: 0;
+}
+
+.menuList a {
+  text-decoration: none;
+  color: #ffffff;
+  font-size: 1rem;
+  display: block;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.menuList a:hover {
+  background-color: #333333; /* Fondo un poco más claro para el hover */
+}

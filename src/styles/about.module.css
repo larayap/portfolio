@@ -116,17 +116,6 @@
     left: -1em;  /* desplaza el guion hacia la izquierda */
   }
   
-  :global(.company) {
-    font-size: 1.3em; /* Hace que el nombre de la empresa se vea más grande */
-    font-weight: bold;
-  }
-  
-  :global(.job) {
-    font-size: 0.9em;
-    color: #777;   /* Un tono gris para el rol y las fechas */
-    margin-left: 0.5em; /* Separación si lo deseas */
-  }
-  
   .techGrid {
     display: flex;
     flex-wrap: wrap;       /* Permite que las tarjetas hagan “salto de línea” */
@@ -157,3 +146,117 @@
     margin-bottom: 0.5rem;
   }
 
+/* Estilos para la versión mobile: carrusel horizontal */
+/* Wrapper con width 100% y padding lateral */
+.mobileCarouselWrapper {
+  width: 100%;
+  padding: 0 20px; /* Ajusta el padding según necesites */
+  margin-top: 20px;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+/* Header con título y flechas */
+.mobileHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  text-align: center;
+  align-self: center;
+  z-index: 1000;
+}
+
+.mobileTitle {
+  font-size: 1.8em;
+  font-family: 'Aquire', sans-serif;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 5px; /* Ajusta para controlar la separación */
+}
+
+/* Botones de flecha */
+.arrowButton {
+  background: transparent;
+  border: none;
+  font-size: 2em;
+  cursor: pointer;
+  height: 100%;
+}
+
+/* Contenedor horizontal de slides */
+/* Wrapper con width 100% y padding lateral */
+.mobileCarouselWrapper {
+  width: 100%;
+  padding: 0 20px; /* Ajusta el padding según necesites */
+  margin-top: 40px;
+  box-sizing: border-box;
+}
+
+/* Header con título y flechas */
+.mobileHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px; /* Ajusta este valor según necesites */
+}
+
+/* Botones de flecha */
+.arrowButton {
+  margin: 0
+}
+
+/* Contenedor horizontal de slides */
+.mobileContentContainer {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  height: 80%;
+}
+
+/* Cada slide ocupa 100% del ancho del contenedor */
+.mobileSlide {
+  flex: 0 0 100%;
+  scroll-snap-align: center;
+  padding: 0 20px; /* Padding interno para que no quede tan pegado */
+  box-sizing: border-box;
+}
+
+.mobileSlide {
+  display: none;
+
+}
+.activeSlide {
+  display: block;
+}
+
+.mobileContentContainer ul {
+  list-style: none; /* quitamos el estilo por defecto */
+  padding-left: 1em; /* sangría para el texto */
+  margin: 0;
+  margin-top: 10px;
+}
+
+.mobileContentContainer ul li {
+  position: relative;
+  font-size: 0.9em;
+  margin-bottom: 0.5em; /* espacio entre elementos, ajustable */
+}
+
+.mobileContentContainer ul li::before {
+  content: "-"; /* el guion */
+  position: absolute;
+  left: -1em;  /* desplaza el guion hacia la izquierda */
+}
+
+@media (max-width: 1100px) {
+  .titles {
+
+    font-size: 1.5em;
+
+  }
+  
+}

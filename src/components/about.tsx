@@ -12,7 +12,7 @@ import {
   FaJava,
   FaVuejs,
   FaGitAlt,
-  FaFigma,
+  // FaFigma,
 } from "react-icons/fa";
 import { SiMysql, SiSharp, SiOracle } from "react-icons/si";
 import styles from "../styles/about.module.css";
@@ -32,7 +32,7 @@ const TechnologiesGrid = () => {
     { name: "PL/SQL", icon: <SiOracle /> },
     { name: "C#", icon: <SiSharp /> },
     { name: "Git", icon: <FaGitAlt /> },
-    { name: "Figma", icon: <FaFigma /> },
+    // { name: "Figma", icon: <FaFigma /> },
   ];
 
   return (
@@ -79,6 +79,15 @@ const TextCarousel = () => {
     `,
     <TechnologiesGrid key="technologies" />,
   ];
+
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 990);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [windowSize, setWindowSize] = useState({
@@ -258,6 +267,112 @@ const TextCarousel = () => {
     setCurrentIndex(index);
   };
 
+  
+  // Dentro de tu componente TextCarousel, declara un ref para el título mobile:
+  const mobileTitleRef = useRef(null);
+
+  useEffect(() => {
+    if (mobileTitleRef.current) {
+      gsap.fromTo(
+        mobileTitleRef.current,
+        { opacity: 0, x: -50, scale: 0.9 }, // inicia 100px a la izquierda
+        { duration: 0.9, opacity: 1, x: 0, scale: 1, ease: "back.out(1.7)" }
+      );
+    }
+  }, [currentIndex]);
+  
+  // Dentro de tu componente TextCarousel (versión mobile)
+const containerRef = useRef(null);
+const startX = useRef(0);
+const deltaX = useRef(0);
+
+const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+  startX.current = e.touches[0].clientX;
+};
+
+const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+  deltaX.current = e.touches[0].clientX - startX.current;
+};
+
+const handleTouchEnd = () => {
+  const threshold = 100; // Mínimo de pixeles para disparar el swipe
+  if (deltaX.current < -threshold && currentIndex < titles.length - 1) {
+    // Swipe hacia la izquierda: siguiente sección
+    setCurrentIndex((prev) => prev + 1);
+  } else if (deltaX.current > threshold && currentIndex > 0) {
+    // Swipe hacia la derecha: sección anterior
+    setCurrentIndex((prev) => prev - 1);
+  }
+  // Reiniciamos el delta para el próximo swipe
+  deltaX.current = 0;
+};
+
+
+  if (isMobile) {
+    return (
+      <div className={styles.mobileCarouselWrapper}>
+        {/* Header con título y flechas */}
+        <div className={styles.mobileHeader}>
+        {currentIndex > 0 && (
+          <button
+            className={styles.arrowButton}
+            onClick={() =>
+              setCurrentIndex((prev) => prev - 1)
+            }
+          >
+            &#9664;
+          </button>
+        )}
+          <div ref={mobileTitleRef} className={styles.mobileTitle}>
+            {titles[currentIndex]}
+          </div>
+          {currentIndex < titles.length - 1 && (
+            <button
+              className={styles.arrowButton}
+              onClick={() =>
+                setCurrentIndex((prev) =>
+                  prev < titles.length - 1 ? prev + 1 : prev
+                )
+              }
+            >
+              &#9654;
+            </button>
+          )}
+        </div>
+        {/* Contenedor horizontal para el contenido */}
+        <div
+          className={styles.mobileContentContainer}
+          data-lenis-prevent
+          ref={containerRef}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
+          {contents.map((content, index) => (
+            <div
+              key={index}
+              className={`${styles.mobileSlide} ${
+                index === currentIndex ? styles.activeSlide : ""
+              }`}
+            >
+              {typeof content === "string" ? (
+                <div
+                  className={styles.contentDiv}
+                  dangerouslySetInnerHTML={{
+                    __html: DOMPurify.sanitize(content),
+                  }}
+                />
+              ) : (
+                content
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+  
+
   return (
     <div className={styles.textCarousel}>
       <div className={styles.cornerBottomRight}>
@@ -282,7 +397,7 @@ const TextCarousel = () => {
           ))}
         </div>
 
-        <div className={styles.content}>
+        <div className={styles.content} data-lenis-prevent>
           {/* 4) Render condicional:
               - Si es string, usamos dangerouslySetInnerHTML
               - Si es un componente, lo mostramos directamente
