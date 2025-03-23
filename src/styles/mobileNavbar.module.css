@@ -21,10 +21,7 @@
   color: #ffffff;
   text-decoration: none;
   transition: color 0.3s ease;
-}
-
-.cvLink:hover {
-  color: #ffcc00; /* Sutil cambio de color al pasar el mouse */
+  pointer-events: auto;
 }
 
 .menuButton {

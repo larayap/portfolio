@@ -14,7 +14,7 @@ const MobileNavbar = () => {
     <nav className={styles.mobileNavbar}>
       <div className={styles.navLeft}>
         {/* Icono de CV en la esquina superior izquierda */}
-        <a href="/cv" className={styles.cvLink}>
+        <a href="/CV - Luis Araya.pdf" download="CV-Luis-Araya.pdf" className={styles.cvLink} aria-label="Descargar CV">
           <TbFileCv size={40} />
         </a>
       </div>

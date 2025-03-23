@@ -25,6 +25,7 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+  font-display: swap;
 }
 
 /* Personalización de la barra de desplazamiento para navegadores basados en WebKit */

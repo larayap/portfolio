@@ -4,11 +4,12 @@
     width: 100%;
     text-align: center;
     margin: 0;
-    color: rgb(68, 66, 66);
+    color: rgb(151, 149, 149);
     font-size: 0.8em;
     letter-spacing: 1.8px;
     display: flex;
     flex-direction: column;
+    font-weight: bold;
   }
   
   .icons {

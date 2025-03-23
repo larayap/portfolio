@@ -120,6 +120,7 @@ const scaleValue =
                 src={project.image}
                 alt={project.title}
                 className={styles.projectImage}
+                loading="lazy"
               />
               {/* Overlay que aparece al hacer hover en la imagen */}
               <a
@@ -132,7 +133,7 @@ const scaleValue =
                 <FaEye style={{ marginLeft: "5px" }} />
               </a>
             </div>
-            <h3 className={styles.projectTitle}>
+            <h1 className={styles.projectTitle}>
               {project.title}
               {/* Icono de GitHub a la derecha del título */}
               {project.github && (
@@ -141,11 +142,12 @@ const scaleValue =
                   target="_blank"
                   rel="noopener noreferrer"
                   className={styles.githubIcon}
+                  aria-label="GitHub"
                 >
                   <FaGithub />
                 </a>
               )}
-            </h3>
+            </h1>
             <p className={styles.projectTech}>
               {project.technologies.join(", ")}
             </p>
@@ -250,6 +252,7 @@ const ProjectsSectionMobile: React.FC = () => {
                   href={project.github}
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="GitHub"
                   className={styles.githubIconMobile}
                 >
                   <FaGithub />

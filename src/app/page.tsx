@@ -18,8 +18,57 @@ const About = dynamic(() => import('@/components/About'), {
   ssr: false,
 });
 
+// Componente Loader con animación de spinner
+const Loader = () => {
+  return (
+    <div className="loader">
+      <div className="spinner"></div>
+      <style jsx>{`
+        .loader {
+          height: 100vh;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          background: black;
+        }
+        .spinner {
+          width: 50px;
+          height: 50px;
+          border: 5px solid white;
+          border-top: 5px solid transparent;
+          border-radius: 50%;
+          animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      `}</style>
+    </div>
+  );
+};
+
 const Main: React.FC = () => {
-  
+  // Estado para saber si ya cargó la página
+  const [isLoaded, setIsLoaded] = useState(false);
+  useEffect(() => {
+    function handleLoad() {
+      // Cuando el navegador finaliza la carga de todos los recursos
+      setIsLoaded(true);
+    }
+
+    // Si el documento ya está listo (ej: recarga rápida), se marca como cargado
+    if (document.readyState === "complete") {
+      setIsLoaded(true);
+    } else {
+      // Escuchamos el evento load
+      window.addEventListener("load", handleLoad);
+      return () => {
+        window.removeEventListener("load", handleLoad);
+      };
+    }
+  }, []);
 
   useEffect(() => {
     // Inicializa Lenis para un scroll global suave
@@ -39,6 +88,10 @@ const Main: React.FC = () => {
       lenis.destroy();
     };
   }, []);
+  // Si la página aún no está cargada, mostramos un loader (o nada)
+  if (!isLoaded) {
+    return <Loader />;
+  }
 
   const NavbarWrapper = () => {
     const [isMobile, setIsMobile] = useState(false);
@@ -84,7 +137,7 @@ const Main: React.FC = () => {
         </section>
         
         {/* Cuarta Sección */}
-        <section id="contact" style={{ position: "relative", height: '100vh', background: 'black', color: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <section id="contact" style={{ position: "relative", height: '100vh', color: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <Contact />
           <Footer />
         </section>

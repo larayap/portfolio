@@ -8,7 +8,9 @@ const ContactSection = () => {
   const formRef = useRef(null);
   const [visible, setVisible] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
-
+  const [loading, setLoading] = useState(false);
+  const [loadingText, setLoadingText] = useState("Enviando");
+  
   // Activamos la animación cuando el formulario entra en la vista
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -41,6 +43,28 @@ const ContactSection = () => {
     message: { value: string };
   }
 
+    // Ciclo para actualizar el texto de carga
+    useEffect(() => {
+      let interval: NodeJS.Timeout;
+      if (loading) {
+        interval = setInterval(() => {
+          setLoadingText((prev) => {
+            if (prev.endsWith("...")) {
+              return "Enviando";
+            } else {
+              return prev + ".";
+            }
+          });
+        }, 500);
+      } else {
+        setLoadingText("Enviando");
+      }
+  
+      return () => {
+        if (interval) clearInterval(interval);
+      };
+    }, [loading]);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
 
@@ -51,6 +75,8 @@ const ContactSection = () => {
       message: target.message.value,
     };
 
+    setLoading(true)
+    
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_SEND}/sendEmail`, {
         method: "POST",
@@ -69,6 +95,8 @@ const ContactSection = () => {
     } catch (error) {
       console.error("Error al enviar el formulario", error);
       setStatus("Hubo un error al enviar el mensaje.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -120,8 +148,12 @@ const ContactSection = () => {
               />
             </div>
           </div>
-          <button type="submit" className={styles.submitButton}>
-            Enviar
+          <button
+            type="submit"
+            className={`${styles.submitButton} ${loading ? styles.loading : ""}`}
+            disabled={loading}
+          >
+            {loading ? loadingText  : "Enviar"}
           </button>
           {status && <p>{status}</p>}
         </form>

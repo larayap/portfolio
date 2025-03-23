@@ -80,6 +80,7 @@ const GrowingLines: React.FC = () => {
                 key={`linkedin-${textX}-${drawVersion}`}
                 href="https://www.linkedin.com/in/luis-alberto-araya-pardo-38308518/"
                 className={styles.fadeIn}
+                aria-label="Linkedin"
                 style={{
                   top: `${textY}px`,
                   left: `${textX}px`,
@@ -90,7 +91,8 @@ const GrowingLines: React.FC = () => {
               </a>,
               <a
                 key={`github-${textY}-${drawVersion}`}
-                href="https://github.com/Flacamasu"
+                href="https://github.com/larayap"
+                aria-label="GitHub"
                 className={`${styles.fadeIn} ${styles.delayAnimation}`}
                 style={{
                   top: `${textY - fontSize - 5}px`,
@@ -162,7 +164,9 @@ const GrowingLines: React.FC = () => {
                 ...prev,
                 <a
                   key={`${text}-${drawVersion}-cv`}
-                  href={url}
+                  href="/CV - Luis Araya.pdf"
+                  download="CV-Luis-Araya.pdf"
+                  aria-label="Descargar CV"
                   className={styles.fadeIn}
                   style={{
                     top: `${textY}px`,
@@ -291,7 +295,9 @@ const GrowingLines: React.FC = () => {
                 ...prev,
                 <a
                   key={`${text}-${drawVersion}-cv`}
-                  href={url}
+                  href="/CV - Luis Araya.pdf"
+                  download="CV-Luis-Araya.pdf"
+                  aria-label="Descargar CV"
                   className={styles.fadeIn}
                   style={{
                     top: `${textY}px`,
@@ -348,6 +354,7 @@ const GrowingLines: React.FC = () => {
             key={`linkedin-${textX}-${drawVersion}`}
             href="https://www.linkedin.com/in/luis-alberto-araya-pardo-38308518/"
             className={styles.fadeIn}
+            aria-label="Linkedin"
             style={{
               top: `${textY}px`,
               left: `${textX}px`,
@@ -358,7 +365,8 @@ const GrowingLines: React.FC = () => {
           </a>,
           <a
             key={`github-${textY}-${drawVersion}`}
-            href="https://github.com/Flacamasu"
+            href="https://github.com/larayap"
+            aria-label="GitHub"
             className={`${styles.fadeIn} ${styles.delayAnimation}`}
             style={{
               top: `${textY - fontSize - 5}px`,

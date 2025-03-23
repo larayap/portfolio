@@ -8,18 +8,18 @@
     },
     
     {
-      "image": "/portfolio.png",
-      "title": "Portafolio",
-      "technologies": ["React", "TypeScript", "Next", "CSS"],
-      "link": "/",
-      "github": "https://github.com/Flacamasu/portfolio"
+      "image": "/nyx.png",
+      "title": "Buscador de prácticas - Nyx",
+      "technologies": ["React", "CSS", "MySql"],
+      "link": "https://nyx.larayap.com/",
+      "github": "https://github.com/larayap/Tesis-nyx"
     },
     {
-      "image": "/portfolio.png",
-      "title": "Portafolio",
-      "technologies": ["React", "TypeScript", "Next", "CSS"],
-      "link": "/",
-      "github": "https://github.com/Flacamasu/portfolio"
+      "image": "/blogs.png",
+      "title": "Blogs",
+      "technologies": ["React", "Vite", "Python", "Django"],
+      "link": "https://blogs.larayap.com/",
+      "github": "https://github.com/larayap/BlogsBackFront"
     }
   ]
   

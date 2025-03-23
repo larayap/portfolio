@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
+
 
 .container {
     display: flex;
@@ -15,9 +15,10 @@
 }
 
 .image {     /* Define un ancho fijo */
-  height: 400px;       /* Asegura que la altura sea igual al ancho */
   border-radius: 50%;  /* Esto convierte la imagen en un círculo */
   object-fit: cover;
+  width: 432px;
+  height: 400px;
 }
 
 .open {
@@ -76,6 +77,7 @@
 
   .image {
     height: 250px; /* Reduce el tamaño de la imagen */
+    width: 270px;
   }
 
   .container {
@@ -99,6 +101,7 @@
 
   .image {
     height: 200px; /* Reduce el tamaño de la imagen */
+    width: 216px;
   }
 
   .container {
