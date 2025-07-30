@@ -16,7 +16,7 @@
     text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
     opacity: 0;
     white-space: nowrap;
-    color: white;
+    color: #E0E0E0;
     text-decoration: none;
     position: absolute;
     transition-duration: .3s;
@@ -40,6 +40,6 @@
     writing-mode: vertical-rl; /* Escribir verticalmente de derecha a izquierda */
     transform: rotate(90); /* Opcional: invertir la dirección si quieres que vaya hacia arriba */
     font-family: 'Anonymous Pro', sans-serif;
-    color: white;
+    color: #E0E0E0;
   }
   

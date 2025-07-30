@@ -9,6 +9,7 @@ import MobileNavbar from "@/components/MobileNavbar";
 import Footer from "@/components/Footer";
 import { useEffect, useState } from 'react';
 import Lenis from 'lenis'
+import img from '../app/me.webp';
 
 const FuturisticLines = dynamic(() => import('@/components/FuturisticLines'), {
   ssr: false,
@@ -52,6 +53,12 @@ const Loader = () => {
 const Main: React.FC = () => {
   // Estado para saber si ya cargó la página
   const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    const pre = new Image();
+    pre.src = img.src;
+  }, []);
+
   useEffect(() => {
     function handleLoad() {
       // Cuando el navegador finaliza la carga de todos los recursos
@@ -75,6 +82,7 @@ const Main: React.FC = () => {
     const lenis = new Lenis({
       duration: 0.5, // Reducido de 1.2 a 0.5 segundos para una respuesta más rápida
       easing: (t) => 1 - Math.pow(1 - t, 2), // Easing cuadrático ease-out, que acelera rápido y se suaviza al final
+      allowNestedScroll: true,
       prevent: (node) => node.matches('[data-lenis-prevent]')
     });
 
@@ -114,8 +122,9 @@ const Main: React.FC = () => {
         <title>Portfolio</title>
         <meta name="description" content="Efecto de líneas futuristas animadas." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+         <link rel="preload" as="image" href={img.src} />
       </Head>
-      <main style={{ margin: 0, overflowX: 'hidden', background: 'black' }}>
+      <main style={{ margin: 0, overflowX: 'hidden'}}>
         {/* Líneas futuristas como barra de navegación */}
         <section style={{ position: 'fixed', zIndex: 999}}>
           <NavbarWrapper />

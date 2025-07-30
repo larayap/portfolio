@@ -29,6 +29,7 @@
 .header {
     font-size: 3.3rem;
     font-weight: 100;
+    color: #ebebeb;
     margin: 0;
     line-height: 1.1;
     font-family: "Russo One", sans-serif;
@@ -38,7 +39,7 @@
 .subheader {
    font-size: 1.6rem;
    font-weight: bold;
-   color: rgb(168, 163, 163);
+   color: rgb(168, 168, 168);
    letter-spacing: 0.11em;
 }
 
@@ -46,7 +47,7 @@
     margin-top: 10px;
     font-size: 1.3rem;
     font-weight: 600;
-    color: rgb(102, 99, 99);
+    color: rgb(99, 99, 99);
     line-height: 1.5;
     font-style: italic;
 }

@@ -10,14 +10,14 @@
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #121212;
+  --foreground: #E0E0E0;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+     --background: #121212;
+     --foreground: #E0E0E0;
   }
 }
 
@@ -35,7 +35,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: black; /* Fondo transparente */
+  background: #121212; /* Fondo transparente */
 }
 
 ::-webkit-scrollbar-thumb {

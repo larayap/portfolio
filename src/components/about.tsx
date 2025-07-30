@@ -48,7 +48,7 @@ const TechnologiesGrid = () => {
 };
 
 const TextCarousel = () => {
-  const titles = ["Quien soy", "Experiencia", "Tecnologias"];
+  const titles = ["Quien soy", "Experiencia", "Tecnologías"];
   const contents = [
     "<strong>¡Hola!</strong><br><br>Soy Luis Araya, un entusiasta del desarrollo web que encuentra magia en convertir ideas en experiencias digitales útiles y atractivas. Me apasiona aprender cosas nuevas y colaborar con personas que compartan esa chispa de curiosidad.<br><br>Además de programar, disfruto de la música y los videojuegos, dos aficiones que me recuerdan lo importante que es la creatividad en todo lo que hacemos. Creo firmemente que la tecnología puede conectar a la gente de formas sorprendentes, y esa posibilidad me impulsa a dar siempre lo mejor de mí en cada proyecto.",
     `
@@ -342,7 +342,7 @@ const handleTouchEnd = () => {
         {/* Contenedor horizontal para el contenido */}
         <div
           className={styles.mobileContentContainer}
-          data-lenis-prevent
+          // data-lenis-prevent
           ref={containerRef}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
@@ -397,7 +397,7 @@ const handleTouchEnd = () => {
           ))}
         </div>
 
-        <div className={styles.content} data-lenis-prevent>
+        <div className={styles.content} /* data-lenis-prevent */>
           {/* 4) Render condicional:
               - Si es string, usamos dangerouslySetInnerHTML
               - Si es un componente, lo mostramos directamente

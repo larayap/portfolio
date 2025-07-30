@@ -1,5 +1,4 @@
 .contactSection {
-    background-color: #000;
     padding: 80px 10px;
     display: flex;
     justify-content: center;
@@ -8,7 +7,6 @@
   
   .contactBox {
     position: relative; /* Para posicionar los elementos de esquina */
-    background-color: #000;
     padding: 40px;
     padding-top: 0;
     margin: 0 10px;
@@ -32,7 +30,7 @@
     position: absolute;
     width: 10%;
     height: 100%;
-    border: 3px solid #fff;
+    border: 3px solid #E0E0E0;
   }
   
   .cornerTopLeft {
@@ -97,13 +95,13 @@
   .formGroup label, .formGroupFull label {
     margin-bottom: 8px;
     font-weight: bold;
-    color: #fff;
+    color: #E0E0E0;
   }
   
   .formGroup input,
   .formGroupFull textarea {
     background-color: #222;
-    color: #fff;
+    color: #E0E0E0;
     padding: 12px;
     border: 1px solid #444;
     font-size: 1rem;
@@ -114,12 +112,12 @@
   .formGroup input:focus,
   .formGroupFull textarea:focus {
     outline: none;
-    border-color: #fff;
+    border-color: #E0E0E0;
     box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.5);
   }
   
   .submitButton {
-    background-color: #fff;
+    background-color: #E0E0E0;
     color: #000;
     padding: 12px;
     border: none;
@@ -130,7 +128,7 @@
   }
   
   .submitButton:hover {
-    background-color: #ddd;
+    background-color: #E0E0E0;
   }
   
   @media (max-width: 768px) {

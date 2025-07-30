@@ -6,7 +6,7 @@
 
 .titleContainer {
     position: relative;
-    background-color: black;
+    background-color: #121212;
     padding: 3px;
     margin-bottom: 8px;
     z-index: 10;
@@ -17,7 +17,7 @@
     margin: 0;
     font-family: "Aquire", sans-serif;
     font-weight: bold;
-    color: #fff;
+    color: #E0E0E0;
     text-align: center;
     opacity: 0;
     transition: opacity 2s ease-in-out;
@@ -32,7 +32,7 @@
     left: 50%;
     transform-origin: top;
     width: 2px;
-    background: linear-gradient(to bottom, #000, #fff);
+    background: linear-gradient(to bottom, #121212, #E0E0E0);
     height: 100%;
     transform: scaleY(0);
     transition: transform 0.3s ease-out;
@@ -159,7 +159,7 @@
   width: 100%;
   padding: 20px;
   box-sizing: border-box;
-  background: #000;
+  background: #121212;
   color: #fff;
   position: relative;
 }
@@ -171,7 +171,7 @@
   /* Puedes fijar una altura para centrar verticalmente el título */
   height: 80px;
   margin-bottom: 20px;
-  background-color: black;
+  background-color: #121212;;
   z-index: 10;
   padding: 0;
   position: relative;
@@ -189,7 +189,7 @@
   left: 50%;
   transform-origin: top;
   width: 2px;
-  background: linear-gradient(to bottom, #000, #fff);
+  background: linear-gradient(to bottom, #121212, #E0E0E0);
   height: 100%;
   transform: scaleY(0);
   transition: transform 0.3s ease-out;
