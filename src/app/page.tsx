@@ -23,29 +23,14 @@ const About = dynamic(() => import('@/components/About'), {
 const Loader = () => {
   return (
     <div className="loader">
-      <div className="spinner"></div>
-      <style jsx>{`
-        .loader {
-          height: 100vh;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          background: black;
-        }
-        .spinner {
-          width: 50px;
-          height: 50px;
-          border: 5px solid white;
-          border-top: 5px solid transparent;
-          border-radius: 50%;
-          animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-      `}</style>
+      <div className="loaderContent">
+        <h1 className="loaderTitle">Luis Araya</h1>
+        <div className="loaderSubtitle">Desarrollador Full Stack</div>
+        <div className="spinnerContainer">
+          <div className="spinner"></div>
+        </div>
+        <div className="loadingText">Cargando...</div>
+      </div>
     </div>
   );
 };
@@ -53,6 +38,8 @@ const Loader = () => {
 const Main: React.FC = () => {
   // Estado para saber si ya cargó la página
   const [isLoaded, setIsLoaded] = useState(false);
+  // Estado para verificar que el CSS esté listo
+  const [cssReady, setCssReady] = useState(false);
 
   useEffect(() => {
     const pre = new Image();
@@ -60,22 +47,66 @@ const Main: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    function handleLoad() {
-      // Cuando el navegador finaliza la carga de todos los recursos
-      setIsLoaded(true);
-    }
+    // Verificar que el CSS esté cargado
+    const checkCssReady = () => {
+      // Verificar que los estilos estén disponibles
+      const testElement = document.createElement('div');
+      testElement.className = 'loader';
+      document.body.appendChild(testElement);
+      
+      // Si podemos obtener los estilos computados, el CSS está listo
+      const styles = window.getComputedStyle(testElement);
+      const backgroundColor = styles.backgroundColor;
+      
+      document.body.removeChild(testElement);
+      
+      // Si el color de fondo es el esperado, el CSS está listo
+      if (backgroundColor && backgroundColor !== 'rgba(0, 0, 0, 0)') {
+        setCssReady(true);
+      } else {
+        // Reintentar en 50ms
+        setTimeout(checkCssReady, 50);
+      }
+    };
 
-    // Si el documento ya está listo (ej: recarga rápida), se marca como cargado
+    // Verificar CSS inmediatamente
+    checkCssReady();
+  }, []);
+
+  useEffect(() => {
+    // Solo verificar la carga completa cuando el CSS esté listo
+    if (!cssReady) return;
+
+    // Función para verificar que todo esté listo
+    const checkEverythingReady = () => {
+      // Verificar que el CSS esté cargado
+      const stylesLoaded = document.styleSheets.length > 0;
+      
+      // Verificar que las fuentes estén cargadas (si está disponible)
+      const fontsReady = document.fonts ? document.fonts.status === 'loaded' : true;
+      
+      if (stylesLoaded && fontsReady) {
+        // Esperar un poco más para asegurar que todo esté completamente cargado
+        setTimeout(() => {
+          setIsLoaded(true);
+        }, 500);
+      } else {
+        // Reintentar en 100ms
+        setTimeout(checkEverythingReady, 100);
+      }
+    };
+
+    // Si el documento ya está listo, verificar
     if (document.readyState === "complete") {
-      setIsLoaded(true);
+      checkEverythingReady();
     } else {
       // Escuchamos el evento load
-      window.addEventListener("load", handleLoad);
+      window.addEventListener("load", checkEverythingReady);
       return () => {
-        window.removeEventListener("load", handleLoad);
+        window.removeEventListener("load", checkEverythingReady);
       };
     }
-  }, []);
+  }, [cssReady]);
 
   useEffect(() => {
     // Inicializa Lenis para un scroll global suave
@@ -96,8 +127,9 @@ const Main: React.FC = () => {
       lenis.destroy();
     };
   }, []);
-  // Si la página aún no está cargada, mostramos un loader (o nada)
-  if (!isLoaded) {
+  
+  // Si la página aún no está cargada o el CSS no está listo, mostramos el loader
+  if (!isLoaded || !cssReady) {
     return <Loader />;
   }
 

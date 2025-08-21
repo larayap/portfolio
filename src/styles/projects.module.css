@@ -12,6 +12,7 @@
     z-index: 10;
     margin-top: 80px;
 }
+
 .title {
     font-size: 3em;
     margin: 0;
@@ -22,9 +23,44 @@
     opacity: 0;
     transition: opacity 2s ease-in-out;
 }
+
 .title.visible {
     opacity: 1;
-  }
+}
+
+/* Estilos para los filtros de categorías */
+.filtersContainer {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.filterButton {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid #E0E0E0;
+    color: #E0E0E0;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: all 0.3s ease;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.filterButton:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.filterButton.active {
+    background-color: #E0E0E0;
+    color: #121212;
+    border-color: #E0E0E0;
+}
+
 /* Línea central que crece con el scroll */
 .centralLine {
     position: absolute;
@@ -109,6 +145,7 @@
     text-decoration: none;
     transition: opacity 0.5s ease;
 }
+
 .imageContainer {
     position: relative;
     overflow: hidden;
@@ -151,8 +188,19 @@
 .projectTech {
     font-size: 0.9em;
     color: #ddd;
+    margin-bottom: 8px;
 }
 
+/* Estilo para la categoría del proyecto */
+.projectCategory {
+    font-size: 0.8em;
+    color: #E0E0E0;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 4px 8px;
+    border-radius: 12px;
+    display: inline-block;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
 
 /* Versión Mobile */
 .projectsSectionMobile {
@@ -166,10 +214,11 @@
 
 .titleContainerMobile {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   /* Puedes fijar una altura para centrar verticalmente el título */
-  height: 80px;
+  min-height: 120px;
   margin-bottom: 20px;
   background-color: #121212;;
   z-index: 10;
@@ -181,6 +230,7 @@
   font-family: "Aquire", sans-serif;
   font-size: 2em;
   text-align: center;
+  margin-bottom: 15px;
 }
 
 .centralLineMobile {
@@ -264,4 +314,16 @@
   font-size: 0.9em;
   color: #ccc;
   margin: 0;
+}
+
+/* Estilo para la categoría del proyecto en mobile */
+.projectCategoryMobile {
+  font-size: 0.8em;
+  color: #E0E0E0;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 4px 8px;
+  border-radius: 12px;
+  display: inline-block;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  align-self: flex-start;
 }

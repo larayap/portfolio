@@ -12,7 +12,7 @@ import {
   FaJava,
   FaVuejs,
   FaGitAlt,
-  // FaFigma,
+  FaPython,
 } from "react-icons/fa";
 import { SiMysql, SiSharp, SiOracle } from "react-icons/si";
 import styles from "../styles/about.module.css";
@@ -32,7 +32,7 @@ const TechnologiesGrid = () => {
     { name: "PL/SQL", icon: <SiOracle /> },
     { name: "C#", icon: <SiSharp /> },
     { name: "Git", icon: <FaGitAlt /> },
-    // { name: "Figma", icon: <FaFigma /> },
+    { name: "Python", icon: <FaPython /> },
   ];
 
   return (
@@ -50,31 +50,40 @@ const TechnologiesGrid = () => {
 const TextCarousel = () => {
   const titles = ["Quien soy", "Experiencia", "Tecnologías"];
   const contents = [
-    "<strong>¡Hola!</strong><br><br>Soy Luis Araya, un entusiasta del desarrollo web que encuentra magia en convertir ideas en experiencias digitales útiles y atractivas. Me apasiona aprender cosas nuevas y colaborar con personas que compartan esa chispa de curiosidad.<br><br>Además de programar, disfruto de la música y los videojuegos, dos aficiones que me recuerdan lo importante que es la creatividad en todo lo que hacemos. Creo firmemente que la tecnología puede conectar a la gente de formas sorprendentes, y esa posibilidad me impulsa a dar siempre lo mejor de mí en cada proyecto.",
+    "<strong>¡Hola!</strong><br><br>Soy <strong>Luis Araya</strong>, un desarrollador Full Stack apasionado por crear soluciones digitales que marquen la diferencia. Mi enfoque combina la precisión técnica con la creatividad, transformando ideas complejas en experiencias de usuario intuitivas y elegantes.<br><br>Mi filosofía de desarrollo se centra en escribir código limpio, escalable y mantenible, siempre con el usuario final en mente. Disfruto especialmente de los desafíos técnicos que requieren pensar fuera de la caja y encontrar soluciones innovadoras.<br><br>Cuando no estoy programando, me sumerjo en el mundo de los videojuegos, una pasión que me ha enseñado la importancia del diseño centrado en el usuario, la iteración constante y la búsqueda de la excelencia. Creo firmemente que la tecnología tiene el poder de conectar personas y transformar realidades, y esa convicción me impulsa a dar lo mejor de mí en cada proyecto que desarrollo.",
     `
       <strong>
         <span class="company">AFP Modelo</span>
         <span class="job">Desarrollador Web (Ene 2024 - Presente)</span>
       </strong>
       <br>
-      <ul>
-        <li>Desarrollo con <strong>Vue</strong>, <strong>C</strong> y <strong>PL/SQL</strong>, trabajando con bases de datos y entornos de desarrollo colaborativos.</li>
-        <li>Diseño de nuevas funcionalidades y mantenimiento de las existentes para optimizar la experiencia de usuario.</li>
-        <li>Participación en la migración de sistemas internos a plataformas web y en la implementación de mejoras continuas.</li>
-        <li>Colaboración con equipos multidisciplinarios, aplicando metodologías ágiles para reducir tiempos de entrega y mejorar la calidad del producto.</li>
-      </ul>
-
-      <strong>
-        <span class="company">Iplacex</span>
-        <span class="job">Desarrollador de recursos web interactivos para la educación (Nov 2024 - Feb 2024)</span>
-      </strong>
+      <p>
+        En mi rol actual, participo en el desarrollo web con <strong>Vue, C# y PL/SQL</strong>, creando y manteniendo funcionalidades que optimizan la plataforma. Además, utilizo <strong>Python</strong> para tareas de automatización y soporte, lo que me permite mejorar procesos internos y agilizar la resolución de incidencias. Todo mi trabajo se orienta a la entrega eficiente de proyectos y tickets, gestionando versiones con GitLab.
+      </p>
       <br>
       <ul>
-        <li>Responsable de la transformación y adaptación estratégica de material educativo para la plataforma digital Rise, asegurando la creación de experiencias de aprendizaje interactivas y atractivas.</li>
-        <li>Seleccioné y adapté material educativo para garantizar la relevancia y el impacto pedagógico.</li>
-        <li>Optimizé la interfaz de la plataforma, asegurando una experiencia de usuario fluida y envolvente.</li>
-        <li>Colaboré con expertos en diseño instruccional para desarrollar contenido educativo preciso y de calidad.</li>
-        <li>Me enfoqué en mantener altos estándares de calidad e innovación, revisando y mejorando cada aspecto del contenido.</li>
+        <li>Investigo y desarrollo nuevas funcionalidades que optimizan el rendimiento de la plataforma.</li>
+        <li>Integro APIs RESTful para facilitar la comunicación entre diferentes partes del sistema.</li>
+        <li>Automatizo procesos repetitivos para mejorar la efectividad y agilidad de los flujos internos.</li>
+        <li>Soluciono bugs y advertencias del sistema reportados por los usuarios.</li>
+        <li>Participo activamente en la migración de sistemas internos hacia plataformas web más modernas.</li>
+        <li>Trabajo en equipo con distintas áreas bajo metodologías ágiles, reduciendo tiempos de entrega y mejorando la calidad del producto.</li>
+      </ul>
+      <br>
+      <strong>
+        <span class="company">Iplacex</span>
+        <span class="job">Desarrollador de recursos web interactivos para la educación (Nov 2022 - Feb 2024)</span>
+      </strong>
+      <br>
+      <p>
+      Formé parte del equipo encargado de la transformación y adaptación estratégica de material educativo para la plataforma digital Rise, con el objetivo de crear experiencias de aprendizaje interactivas, dinámicas y atractivas.
+      </p>
+      <br>
+      <ul>
+        <li>Seleccioné y adapté material educativo para la plataforma digital Rise, asegurando la creación de experiencias de aprendizaje interactivas y atractivas.</li>
+        <li>Optimicé la interfaz de la plataforma, logrando una experiencia de usuario fluida y envolvente.</li>
+        <li>Colaboré con expertos en diseño instruccional para garantizar contenidos educativos de calidad y precisión.</li>
+        <li>Me enfoqué en mantener altos estándares de innovación y calidad, revisando y mejorando cada aspecto del contenido.</li>
       </ul>
     `,
     <TechnologiesGrid key="technologies" />,

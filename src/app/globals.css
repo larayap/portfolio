@@ -66,3 +66,133 @@ canvas {
   color: #777;   /* Un tono gris para el rol y las fechas */
   margin-left: 0.5em; /* Separación si lo deseas */
 }
+
+/* Estilos del Loader */
+.loader {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #121212;
+  color: #E0E0E0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.loaderContent {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.loaderTitle {
+  font-family: 'Aquire', sans-serif;
+  font-size: 3.5em;
+  font-weight: bold;
+  margin: 0;
+  color: #E0E0E0;
+  text-shadow: 0 0 20px rgba(224, 224, 224, 0.3);
+  animation: titleGlow 2s ease-in-out infinite alternate;
+}
+
+.loaderSubtitle {
+  font-size: 1.2em;
+  color: #ccc;
+  margin: 0;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.spinnerContainer {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin: 20px 0;
+}
+
+.spinner {
+  width: 100%;
+  height: 100%;
+  border: 3px solid rgba(224, 224, 224, 0.1);
+  border-top: 3px solid #E0E0E0;
+  border-radius: 50%;
+  animation: spin 1.5s linear infinite;
+  box-shadow: 0 0 20px rgba(224, 224, 224, 0.2);
+}
+
+.loadingText {
+  font-size: 0.9em;
+  color: #999;
+  letter-spacing: 1px;
+  animation: textPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes titleGlow {
+  0% { text-shadow: 0 0 20px rgba(224, 224, 224, 0.3); }
+  100% { text-shadow: 0 0 30px rgba(224, 224, 224, 0.6), 0 0 40px rgba(224, 224, 224, 0.3); }
+}
+
+@keyframes textPulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* Líneas decorativas futuristas */
+.loader::before,
+.loader::after {
+  content: '';
+  position: absolute;
+  background: linear-gradient(90deg, transparent, #E0E0E0, transparent);
+  height: 1px;
+  width: 200px;
+  animation: lineMove 3s ease-in-out infinite;
+}
+
+.loader::before {
+  top: 30%;
+  animation-delay: 0s;
+}
+
+.loader::after {
+  bottom: 30%;
+  animation-delay: 1.5s;
+}
+
+@keyframes lineMove {
+  0%, 100% { 
+    transform: translateX(-100px);
+    opacity: 0;
+  }
+  50% { 
+    transform: translateX(100px);
+    opacity: 1;
+  }
+}
+
+/* Responsive para el loader */
+@media (max-width: 768px) {
+  .loaderTitle {
+    font-size: 2.5em;
+  }
+  
+  .loaderSubtitle {
+    font-size: 1em;
+  }
+  
+  .spinnerContainer {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .loader::before,
+  .loader::after {
+    width: 150px;
+  }
+}
