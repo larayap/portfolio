@@ -15,7 +15,11 @@ const FuturisticLines = dynamic(() => import('@/components/FuturisticLines'), {
   ssr: false,
 });
 
-const About = dynamic(() => import('@/components/About'), {
+const FuturisticLinesMobile = dynamic(() => import('@/components/FuturisticLinesMobile'), {
+  ssr: false,
+});
+
+const About = dynamic(() => import('@/components/AboutMe'), {
   ssr: false,
 });
 
@@ -40,6 +44,17 @@ const Main: React.FC = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   // Estado para verificar que el CSS esté listo
   const [cssReady, setCssReady] = useState(false);
+
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 1100);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     const pre = new Image();
@@ -134,18 +149,19 @@ const Main: React.FC = () => {
   }
 
   const NavbarWrapper = () => {
-    const [isMobile, setIsMobile] = useState(false);
-  
-    useEffect(() => {
-      const handleResize = () => {
-        setIsMobile(window.innerWidth < 1100);
-      };
-      handleResize();
-      window.addEventListener("resize", handleResize);
-      return () => window.removeEventListener("resize", handleResize);
-    }, []);
-  
-    return isMobile ? <MobileNavbar /> : <FuturisticLines />;
+
+    return (
+      <>
+        {isMobile ? (
+          <>
+            <FuturisticLinesMobile />
+            <MobileNavbar />
+          </>
+        ) : (
+          <FuturisticLines />
+        )}
+      </>
+    );
   };
   
   return (
@@ -168,17 +184,30 @@ const Main: React.FC = () => {
         </section>
 
         {/* Segunda Sección */}
-        <section id="aboutme" style={{ height: '100vh', color: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 100, minHeight: '650px' }}>
+        <section 
+          id="aboutme" 
+          style={{ 
+            height: '100vh', 
+            color: 'white', 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center', 
+            zIndex: 100, 
+            minHeight: isMobile ? '0' : '600px',
+            paddingTop: isMobile ? '65px' : '0',
+            paddingBottom: isMobile ? '35px' : '0',
+          }}
+        >
           <About />
         </section>
 
         {/* Tercera Sección */}
-        <section id="projects" style={{ color: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 100 }}>
+        <section id="projects" style={{ color: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 100, paddingTop: isMobile ? '60px' : '0' }}>
           <Projects />
         </section>
         
         {/* Cuarta Sección */}
-        <section id="contact" style={{ position: "relative", height: '100vh', color: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <section id="contact" style={{ position: "relative", height: '100vh', minHeight: '725px', color: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <Contact />
           <Footer />
         </section>

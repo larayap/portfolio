@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build --no-lint",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "skills:sync": "node scripts/sync-skills-to-cursor.cjs"
   },
   "dependencies": {
     "@studio-freight/lenis": "^1.0.42",
@@ -20,7 +21,8 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-icons": "^5.4.0",
-    "smooth-scrollbar": "^8.8.4"
+    "smooth-scrollbar": "^8.8.4",
+    "swiper": "^12.0.3"
   },
   "devDependencies": {
     "@types/locomotive-scroll": "^4.1.4",

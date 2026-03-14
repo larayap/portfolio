@@ -6,6 +6,7 @@ import projectsData from "../utils/projectsConfig.json";
 import styles from "../styles/projects.module.css";
 import { FaGithub, FaEye } from "react-icons/fa";
 import { gsap } from "gsap";
+import { throttle } from "../utils/performanceUtils";
 
 // Configuración de los parámetros de animación
 const spacing = 200;           // Espaciado entre cada proyecto (en px)
@@ -43,7 +44,6 @@ const ProjectsSectionDesktop: React.FC = () => {
   const titleRef = useRef(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [smoothProgress, setSmoothProgress] = useState(0);
   const [containerHeight, setContainerHeight] = useState(0);
   const [titleVisible, setTitleVisible] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("Todas las tecnologías");
@@ -60,46 +60,38 @@ const ProjectsSectionDesktop: React.FC = () => {
     if (selectedCategory === "Todas las tecnologías") {
       return projectsData;
     }
-    return projectsData.filter(project => 
+    return projectsData.filter(project =>
       project.technologies.includes(selectedCategory)
     );
   }, [selectedCategory]);
 
-  // Calcula la altura dinámica del contenedor
+  // Calcula la altura dinámica del contenedor con throttle
   useEffect(() => {
     const updateContainerHeight = () => {
-      const newHeight = initialOffset + (filteredProjects.length - 1) * spacing + bottomMargin
+      const newHeight = initialOffset + (filteredProjects.length - 1) * spacing + bottomMargin;
       setContainerHeight(newHeight);
     };
 
     updateContainerHeight();
-    window.addEventListener("resize", updateContainerHeight);
-    return () => window.removeEventListener("resize", updateContainerHeight);
+
+    const throttledResize = throttle(updateContainerHeight, 150);
+    window.addEventListener("resize", throttledResize);
+    return () => window.removeEventListener("resize", throttledResize);
   }, [filteredProjects.length]);
 
-  // Calcula el progreso del scroll relativo al contenedor
+  // Calcula el progreso del scroll relativo al contenedor con throttle
   useEffect(() => {
-    const handleScroll = () => {
+    const handleScroll = throttle(() => {
       if (!containerRef.current || containerHeight === 0) return;
       const rect = containerRef.current.getBoundingClientRect();
       const progress = (window.innerHeight - rect.top) / containerHeight;
       setScrollProgress(Math.min(1, Math.max(0, progress)));
-    };
+    }, 16); // ~60fps
 
     window.addEventListener("scroll", handleScroll);
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, [containerHeight]);
-
-  useEffect(() => {
-    let animationFrame: number;
-    const animate = () => {
-      setSmoothProgress(prev => prev + (scrollProgress - prev) * 0.1);
-      animationFrame = requestAnimationFrame(animate);
-    };
-    animate();
-    return () => cancelAnimationFrame(animationFrame);
-  }, [scrollProgress]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -121,33 +113,35 @@ const ProjectsSectionDesktop: React.FC = () => {
     };
   }, []);
 
-// Definimos un umbral a partir del cual se transiciona
-const threshold = 0.95;
-const scaleValue =
-  smoothProgress < threshold
-    ? smoothProgress * 0.9
-    : 0.9 + Math.pow((smoothProgress - threshold) / (1 - threshold), 2) * 0.1;
+  // Definimos un umbral a partir del cual se transiciona
+  const threshold = 0.95;
+  const scaleValue =
+    scrollProgress < threshold
+      ? scrollProgress * 0.9
+      : 0.9 + Math.pow((scrollProgress - threshold) / (1 - threshold), 2) * 0.1;
+
   return (
     <div
       ref={containerRef}
       className={styles.projectsSection}
       style={{ height: `${containerHeight}px` }}
     >
-      <div
-        ref={titleRef}
-        className={`${styles.titleContainer}`}
-      >
-        <h1 className={`${styles.title} ${titleVisible ? styles.visible : ""}`} >Proyectos</h1>
+      <div ref={titleRef} className={`${styles.titleContainer}`}>
+        <h1 className={`${styles.title} ${titleVisible ? styles.visible : ""}`}>Proyectos</h1>
         <CategoryFilters
           selectedCategory={selectedCategory}
           onCategoryChange={setSelectedCategory}
           categories={categories}
         />
       </div>
-      {/* La línea central se escala en Y directamente según scrollProgress */}
+
+      {/* La línea central con CSS transition para suavizado */}
       <div
         className={styles.centralLine}
-        style={{ transform: `scaleY(${Math.min(scaleValue, 1)})` }}
+        style={{
+          transform: `scaleY(${Math.min(scaleValue, 1)})`,
+          transition: 'transform 0.1s ease-out'
+        }}
       />
       {filteredProjects.map((project, index) => {
         // Se posiciona cada proyecto a partir del offset inicial y el espaciado definido
@@ -248,14 +242,14 @@ const ProjectsSectionMobile: React.FC = () => {
                 opacity: 1,
                 y: 0,
                 duration: 0.8,
-                ease: "power1.out",
+                ease: "power2.out",
               });
             } else {
               gsap.to(box, {
-                opacity: 1,
+                opacity: 0, // FIX: estaba en 1, causaba que no se ocultara
                 y: -50,
                 duration: 0.8,
-                ease: "power1.in",
+                ease: "power2.in",
               });
             }
           },
@@ -270,14 +264,15 @@ const ProjectsSectionMobile: React.FC = () => {
     };
   }, [filteredProjects]);
 
-  // Listener para calcular el progreso de scroll en la sección mobile
+  // Listener para calcular el progreso de scroll en la sección mobile con throttle
   useEffect(() => {
-    const handleScroll = () => {
+    const handleScroll = throttle(() => {
       if (!containerMobileRef.current) return;
       const rect = containerMobileRef.current.getBoundingClientRect();
       const progress = (window.innerHeight - rect.top) / rect.height;
       setScrollProgressMobile(Math.min(1, Math.max(0, progress)));
-    };
+    }, 16);
+
     window.addEventListener("scroll", handleScroll);
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
@@ -295,7 +290,10 @@ const ProjectsSectionMobile: React.FC = () => {
       </div>
       <div
         className={styles.centralLineMobile}
-        style={{ transform: `scaleY(${scrollProgressMobile})` }}
+        style={{
+          transform: `scaleY(${scrollProgressMobile})`,
+          transition: 'transform 0.1s ease-out'
+        }}
       />
       <div className={styles.projectsList}>
         {filteredProjects.map((project, index) => (
@@ -310,6 +308,7 @@ const ProjectsSectionMobile: React.FC = () => {
                 src={project.image}
                 alt={project.title}
                 className={styles.projectImageMobile}
+                loading="lazy"
               />
               <a
                 href={project.link}

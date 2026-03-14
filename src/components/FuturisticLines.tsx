@@ -5,6 +5,7 @@ import configLines from "../utils/configLines.json";
 import styles from "../styles/futuristicLines.module.css";
 import { AiFillLinkedin, AiFillGithub } from "react-icons/ai";
 import { TbFileCv } from "react-icons/tb";
+import { debounce } from "../utils/performanceUtils";
 
 interface LineParams {
   startX: number; // Coordenada X inicial
@@ -24,12 +25,14 @@ interface LineParams {
 
 const GrowingLines: React.FC = () => {
   const linesCanvasRef = useRef<HTMLCanvasElement | null>(null);
-  const circleCanvasRefs = useRef<(HTMLCanvasElement | null)[]>([]);
+  const circlesCanvasRef = useRef<HTMLCanvasElement | null>(null); // 1 solo canvas para todos los círculos
   const [textElements, setTextElements] = useState<JSX.Element[]>([]);
   // Ref para guardar el id de requestAnimationFrame
   const animationFrameId = useRef<number | null>(null);
   // Ref para controlar la versión del dibujo. Cada vez que se inicia un nuevo dibujo se incrementa.
   const versionRef = useRef(0);
+  // Ref para almacenar las posiciones actuales de los círculos
+  const circlePositionsRef = useRef<{x: number, y: number}[]>([]);
 
   // Función para dibujar las líneas de forma progresiva
   const drawLines = (
@@ -65,6 +68,11 @@ const GrowingLines: React.FC = () => {
     const aspect = window.innerWidth / window.innerHeight;
     const multiplier = -0.02 * aspect + 1.0;
     const multiplierMail = -0.02 * aspect + 0.88;
+
+    // Configurar contexto una sola vez antes del loop
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 1.7;
+    ctx.imageSmoothingEnabled = true;
 
     const drawSegment = () => {
       if (totalLength >= maxTotalLength) {
@@ -192,9 +200,7 @@ const GrowingLines: React.FC = () => {
       const angleInRadians = currentAngle * (Math.PI / 180);
       const nextX = Math.round(currentX + growthSpeed * Math.cos(angleInRadians));
       const nextY = Math.round(currentY + growthSpeed * Math.sin(angleInRadians));
-      ctx.strokeStyle = color;
-      ctx.lineWidth = 1.7;
-      ctx.imageSmoothingEnabled = true;
+
       ctx.beginPath();
       ctx.moveTo(Math.round(currentX), Math.round(currentY));
       ctx.lineTo(nextX, nextY);
@@ -214,20 +220,33 @@ const GrowingLines: React.FC = () => {
     drawSegment();
   };
 
-  // Función para dibujar el círculo
-  const drawCircle = (
+  // Función optimizada para dibujar todos los círculos en un solo canvas
+  const drawAllCircles = (
     ctxCircle: CanvasRenderingContext2D,
+    circleIndex: number,
     x: number,
     y: number
   ) => {
-    const circleRadius = 3;
+    // Actualizar la posición del círculo específico
+    circlePositionsRef.current[circleIndex] = { x, y };
+
+    // Limpiar todo el canvas
     ctxCircle.clearRect(0, 0, ctxCircle.canvas.width, ctxCircle.canvas.height);
-    ctxCircle.beginPath();
+
+    // Configuración del círculo (solo una vez antes del loop)
+    const circleRadius = 3;
     ctxCircle.fillStyle = "white";
     ctxCircle.shadowColor = "rgba(255, 255, 255, 1)";
     ctxCircle.shadowBlur = 30;
-    ctxCircle.arc(x, y, circleRadius, 0, 2 * Math.PI);
-    ctxCircle.fill();
+
+    // Dibujar todos los círculos
+    circlePositionsRef.current.forEach((pos) => {
+      if (pos) {
+        ctxCircle.beginPath();
+        ctxCircle.arc(pos.x, pos.y, circleRadius, 0, 2 * Math.PI);
+        ctxCircle.fill();
+      }
+    });
   };
 
   // Función para dibujar las líneas de forma instantánea (usada en resize)
@@ -261,6 +280,11 @@ const GrowingLines: React.FC = () => {
     const aspect = window.innerWidth / window.innerHeight;
     const multiplier = -0.02 * aspect + 1.0;
     const multiplierMail = -0.02 * aspect + 0.88;
+
+    // Configurar contexto una sola vez antes del loop
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 1.7;
+    ctx.imageSmoothingEnabled = true;
 
     while (totalLength < maxTotalLength) {
       if (spin && totalLength > canvasWidth * momentSpin1) {
@@ -322,9 +346,7 @@ const GrowingLines: React.FC = () => {
       const angleInRadians = currentAngle * (Math.PI / 180);
       const nextX = Math.round(currentX + growthSpeed * Math.cos(angleInRadians));
       const nextY = Math.round(currentY + growthSpeed * Math.sin(angleInRadians));
-      
-      ctx.strokeStyle = color;
-      ctx.lineWidth = 1.7;
+
       ctx.beginPath();
       ctx.moveTo(Math.round(currentX), Math.round(currentY));
       ctx.lineTo(nextX, nextY);
@@ -405,24 +427,15 @@ const GrowingLines: React.FC = () => {
 
   useEffect(() => {
     const linesCanvas = linesCanvasRef.current;
-    if (!linesCanvas) return;
+    const circlesCanvas = circlesCanvasRef.current;
+    if (!linesCanvas || !circlesCanvas) return;
+
     const linesCtx = linesCanvas.getContext("2d");
-    if (!linesCtx) return;
+    const circlesCtx = circlesCanvas.getContext("2d");
+    if (!linesCtx || !circlesCtx) return;
 
-    const circleContexts = circleCanvasRefs.current
-      .map((canvas) => {
-        if (!canvas) return null;
-        const ctx = canvas.getContext("2d");
-        if (ctx) {
-          canvas.width = window.innerWidth;
-          canvas.height = window.innerHeight;
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-        }
-        return ctx;
-      })
-      .filter(Boolean);
-
-    if (!circleContexts.length) return;
+    // Inicializar el array de posiciones de círculos
+    circlePositionsRef.current = new Array(configLines.length).fill(null);
 
     // Iniciamos una nueva versión para este dibujo
     versionRef.current++;
@@ -432,10 +445,13 @@ const GrowingLines: React.FC = () => {
       // Configuramos los canvas y limpiamos
       linesCanvas.width = window.innerWidth;
       linesCanvas.height = window.innerHeight;
-      linesCtx.clearRect(0, 0, linesCanvas.width, linesCanvas.height);
+      circlesCanvas.width = window.innerWidth;
+      circlesCanvas.height = window.innerHeight;
 
-      circleContexts.forEach((circleCtx, index) => {
-        const configEntry = configLines[index];
+      linesCtx.clearRect(0, 0, linesCanvas.width, linesCanvas.height);
+      circlesCtx.clearRect(0, 0, circlesCanvas.width, circlesCanvas.height);
+
+      configLines.forEach((configEntry, index) => {
         const { startX, startY, angle, growthSpeed, angleIncrement, spin, momentSpin1, momentSpin2, momentSpin3, maxTotalLength, text, url } = configEntry;
         drawLines(
           linesCtx,
@@ -455,7 +471,7 @@ const GrowingLines: React.FC = () => {
           },
           linesCanvas.width,
           linesCanvas.height,
-          (x, y) => circleCtx && drawCircle(circleCtx, x, y),
+          (x, y) => drawAllCircles(circlesCtx, index, x, y),
           currentVersion
         );
       });
@@ -469,14 +485,20 @@ const GrowingLines: React.FC = () => {
         cancelAnimationFrame(animationFrameId.current);
         animationFrameId.current = null;
       }
+
+      // Reinicializar posiciones de círculos
+      circlePositionsRef.current = new Array(configLines.length).fill(null);
+
       linesCanvas.width = window.innerWidth;
       linesCanvas.height = window.innerHeight;
-      linesCtx.clearRect(0, 0, linesCanvas.width, linesCanvas.height);
+      circlesCanvas.width = window.innerWidth;
+      circlesCanvas.height = window.innerHeight;
 
-      circleContexts.forEach((circleCtx, index) => {
-        if (!circleCtx) return;
-        circleCtx.clearRect(0, 0, circleCtx.canvas.width, circleCtx.canvas.height);
-        const configEntry = configLines[index];
+      linesCtx.clearRect(0, 0, linesCanvas.width, linesCanvas.height);
+      circlesCtx.clearRect(0, 0, circlesCanvas.width, circlesCanvas.height);
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      configLines.forEach((configEntry, index) => {
         const { startX, startY, angle, growthSpeed, angleIncrement, spin, momentSpin1, momentSpin2, momentSpin3, maxTotalLength, text, url } = configEntry;
         drawLinesInstantly(
           linesCtx,
@@ -501,8 +523,11 @@ const GrowingLines: React.FC = () => {
     };
 
     initialCanvas();
-    window.addEventListener("resize", resizeCanvas);
-    return () => window.removeEventListener("resize", resizeCanvas);
+
+    // Throttle del resize para mejor rendimiento
+    const debouncedResize = debounce(resizeCanvas, 200);
+    window.addEventListener("resize", debouncedResize);
+    return () => window.removeEventListener("resize", debouncedResize);
   }, []);
 
   return (
@@ -517,22 +542,17 @@ const GrowingLines: React.FC = () => {
           zIndex: 1,
         }}
       />
-      {/* Canvas para los círculos */}
-      {configLines.map((item, index) => (
-        <canvas
-          key={index}
-          ref={(el) => {
-            circleCanvasRefs.current[index] = el;
-          }}
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            zIndex: 2,
-            pointerEvents: "none",
-          }}
-        />
-      ))}
+      {/* Canvas consolidado para TODOS los círculos */}
+      <canvas
+        ref={circlesCanvasRef}
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          zIndex: 2,
+          pointerEvents: "none",
+        }}
+      />
       {textElements}
     </div>
   );

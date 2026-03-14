@@ -45,7 +45,7 @@
   }
   
   .content {
-    position: relative; 
+    position: relative;
     flex: 1 1 auto;
     overflow-y: auto;
     box-sizing: border-box;
@@ -60,6 +60,34 @@
     font-family: 'Orbitron', sans-serif;
     letter-spacing: 1px;
     font-size: 1.15em;
+
+    /* Eliminar cualquier scroll horizontal */
+    overflow-x: hidden;
+    max-width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+
+    /* Permitir ambos movimientos para que JavaScript pueda decidir */
+    touch-action: pan-x pan-y;
+
+    /* Transiciones suaves al renderizar */
+    animation: fadeInContent 0.4s ease-out;
+  }
+  
+  /* Asegurar que todos los elementos dentro también permitan ambos movimientos */
+  .contentDiv * {
+    touch-action: pan-x pan-y;
+  }
+
+  @keyframes fadeInContent {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
   
   .animatedLineHorizontal {
@@ -146,25 +174,48 @@
     margin-bottom: 0.5rem;
   }
 
-/* Estilos para la versión mobile: carrusel horizontal */
-/* Wrapper con width 100% y padding lateral */
+/* ========== ESTILOS MOBILE ========== */
+
+/* Wrapper principal del carrusel mobile */
 .mobileCarouselWrapper {
+  position: relative;
   width: 100%;
-  padding: 0 20px; /* Ajusta el padding según necesites */
-  margin-top: 20px;
   height: 100%;
   box-sizing: border-box;
+}
+
+/* Líneas animadas top/bottom - Estilo monocromático consistente con el sitio */
+.topLine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #E0E0E0, transparent);
+  transform-origin: center;
+  will-change: transform;
+  z-index: 10;
+}
+
+.bottomLine {
+  position: relative;
+  margin-top: 10px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #E0E0E0, transparent);
+  transform-origin: center;
+  will-change: transform;
+  z-index: 10;
 }
 
 /* Header con título y flechas */
 .mobileHeader {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 25px;
   text-align: center;
-  align-self: center;
-  z-index: 1000;
+  z-index: 100;
 }
 
 .mobileTitle {
@@ -174,7 +225,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 5px; /* Ajusta para controlar la separación */
+  margin: 0 5px;
+  will-change: transform, opacity;
 }
 
 /* Botones de flecha */
@@ -183,54 +235,104 @@
   border: none;
   font-size: 2em;
   cursor: pointer;
-  height: 100%;
+  color: #fff;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  padding: 10px;
+  margin: 0;
 }
 
-/* Contenedor horizontal de slides */
-/* Wrapper con width 100% y padding lateral */
-.mobileCarouselWrapper {
-  width: 100%;
-  padding: 0 20px; /* Ajusta el padding según necesites */
-  margin-top: 40px;
-  box-sizing: border-box;
+.arrowButton:hover {
+  transform: scale(1.1);
+  opacity: 0.8;
 }
 
-/* Header con título y flechas */
-.mobileHeader {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px; /* Ajusta este valor según necesites */
+.arrowButton:active {
+  transform: scale(0.95);
 }
 
-/* Botones de flecha */
-.arrowButton {
-  margin: 0
+/* Indicador de swipe - Minimalista y sutil */
+.swipeIndicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+  color: rgba(224, 224, 224, 0.3);
+  pointer-events: none;
+  z-index: 1000;
+  font-family: Arial, sans-serif;
+  font-weight: 300;
 }
 
-/* Contenedor horizontal de slides */
+/* Contenedor del contenido con transiciones */
 .mobileContentContainer {
-  display: flex;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
+  position: relative;
+  width: 100%;
   height: 80%;
+  overflow: hidden;
+
+  /* Permitir ambos movimientos para que JavaScript pueda decidir */
+  touch-action: pan-x pan-y;
 }
 
-/* Cada slide ocupa 100% del ancho del contenedor */
+/* Wrapper horizontal que contiene todos los slides */
+.horizontalScrollWrapper {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  will-change: transform;
+}
+
+/* Cada slide con animaciones y smooth scroll */
 .mobileSlide {
-  flex: 0 0 100%;
-  scroll-snap-align: center;
-  padding: 0 20px; /* Padding interno para que no quede tan pegado */
+  min-width: 100%;
+  width: 100%;
+  height: 100%;
+  padding: 0 20px;
   box-sizing: border-box;
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex-shrink: 0;
+
+  /* Scroll suave nativo */
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+
+  /* Permitir que el scroll se propague al padre cuando llegue al final */
+  overscroll-behavior-y: auto;
+  overscroll-behavior-x: contain;
+
+  /* Permitir ambos movimientos para que JavaScript pueda decidir */
+  touch-action: pan-x pan-y;
+
+  /* Prevenir selección de texto para que no interfiera con swipe horizontal */
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+
+  /* Personalización del scrollbar para un look más limpio */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(224, 224, 224, 0.3) transparent;
 }
 
-.mobileSlide {
-  display: none;
-
+/* Scrollbar para WebKit (Chrome, Safari) */
+.mobileSlide::-webkit-scrollbar {
+  width: 4px;
 }
-.activeSlide {
-  display: block;
+
+.mobileSlide::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.mobileSlide::-webkit-scrollbar-thumb {
+  background-color: rgba(224, 224, 224, 0.3);
+  border-radius: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.mobileSlide::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(224, 224, 224, 0.5);
 }
 
 .mobileContentContainer ul {
@@ -238,12 +340,16 @@
   padding-left: 1em; /* sangría para el texto */
   margin: 0;
   margin-top: 10px;
+  /* Permitir ambos movimientos para que JavaScript pueda decidir */
+  touch-action: pan-x pan-y;
 }
 
 .mobileContentContainer ul li {
   position: relative;
   font-size: 0.9em;
   margin-bottom: 0.5em; /* espacio entre elementos, ajustable */
+  /* Permitir ambos movimientos para que JavaScript pueda decidir */
+  touch-action: pan-x pan-y;
 }
 
 .mobileContentContainer ul li::before {
@@ -252,11 +358,148 @@
   left: -1em;  /* desplaza el guion hacia la izquierda */
 }
 
+/* Asegurar que todos los elementos dentro del contenedor permitan ambos movimientos */
+.mobileContentContainer * {
+  touch-action: pan-x pan-y;
+}
+
+/* Estilos para Swiper */
+.swiperContainer {
+  width: 100%;
+  height: 100%;
+}
+
+.swiperContainer :global(.swiper-pagination) {
+  position: relative;
+  margin-top: 20px;
+  padding: 10px 0;
+}
+
+.swiperSlide {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: stretch;
+}
+
+/* Contenedor de indicadores de posición */
+.dotsContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+  padding: 10px 0;
+}
+
+/* Estilos para paginación de Swiper */
+.swiperPaginationBullet {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(224, 224, 224, 0.3);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.43, 0.13, 0.23, 0.96);
+  opacity: 1;
+  margin: 0 6px;
+}
+
+.swiperPaginationBulletActive {
+  background: #E0E0E0;
+  transform: scale(1.3);
+  box-shadow: 0 0 8px rgba(224, 224, 224, 0.6);
+}
+
+.swiperPaginationBullet:hover {
+  background: rgba(224, 224, 224, 0.6);
+  transform: scale(1.15);
+}
+
+/* Cada punto indicador */
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(224, 224, 224, 0.3);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.43, 0.13, 0.23, 0.96);
+  padding: 0;
+}
+
+/* Punto activo */
+.activeDot {
+  background: #E0E0E0;
+  transform: scale(1.3);
+  box-shadow: 0 0 8px rgba(224, 224, 224, 0.6);
+}
+
+/* Hover en los puntos */
+.dot:hover {
+  background: rgba(224, 224, 224, 0.6);
+  transform: scale(1.15);
+}
+
+/* Contenedor de la paginación */
+.swiperContainer :global(.swiper-pagination) {
+  position: relative;
+  margin-top: 20px;
+  padding-bottom: 10px;
+}
+
+/* Estilo de cada puntito */
+.swiperContainer :global(.swiper-pagination-bullet) {
+  width: 10px;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.4);
+  opacity: 1;
+  margin: 0 5px;
+  transition: all 0.3s ease;
+}
+
+/* Paginación personalizada */
+.customPagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+  position: relative;
+  z-index: 100;
+  min-height: 50px;
+  width: 100%;
+}
+
+/* Estilos para los bullets - usando :global para acceder a clases de Swiper */
+.customPagination :global(.swiper-pagination-bullet) {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  opacity: 1;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 0 6px;
+  display: inline-block;
+  border: none;
+}
+
+.customPagination :global(.swiper-pagination-bullet-active) {
+  background: #ffffff;
+  transform: scale(1.3);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+.customPagination :global(.swiper-pagination-bullet:hover) {
+  background: rgba(255, 255, 255, 0.7);
+  transform: scale(1.2);
+}
+
 @media (max-width: 1100px) {
   .titles {
 
     font-size: 1.5em;
 
   }
-  
+
 }

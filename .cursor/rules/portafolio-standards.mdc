@@ -1,0 +1,12 @@
+---
+description: Estándares del portafolio Next.js (componentes, estilos, export estático)
+globs: src/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# Estándares del portafolio
+
+- Componentes en `src/components/` con CSS module en `src/styles/` (mismo nombre + `.module.css`).
+- Usar `"use client"` en componentes cliente.
+- Rutas y alias: `@/*` → `./src/*`.
+- Export estático: no usar APIs dinámicas de Next que no sean compatibles con `output: 'export'`.
