@@ -9,46 +9,103 @@ import {
   FaNodeJs,
   FaReact,
   FaPhp,
-  FaJava,
   FaVuejs,
   FaGitAlt,
   FaPython,
+  FaRobot,
+  FaProjectDiagram,
+  FaPlug,
 } from "react-icons/fa";
-import { SiMysql, SiSharp, SiOracle } from "react-icons/si";
+import {
+  SiMysql,
+  SiSharp,
+  SiOracle,
+  SiAngular,
+  SiTypescript,
+  SiMongodb,
+  SiDocker,
+  SiGitlab,
+  SiGithub,
+} from "react-icons/si";
+import { HiSparkles } from "react-icons/hi2";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, A11y } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
 import "swiper/css/bundle";
 import styles from "../styles/about.module.css";
 
-const TechnologiesGrid = () => {
-  const techList = [
-    { name: "HTML", icon: <FaHtml5 /> },
-    { name: "CSS", icon: <FaCss3Alt /> },
-    { name: "JavaScript", icon: <FaJsSquare /> },
-    { name: "Node.js", icon: <FaNodeJs /> },
-    { name: "MySQL", icon: <SiMysql /> },
-    { name: "React.js", icon: <FaReact /> },
-    { name: "PHP", icon: <FaPhp /> },
-    { name: "Java", icon: <FaJava /> },
-    { name: "Vue", icon: <FaVuejs /> },
-    { name: "PL/SQL", icon: <SiOracle /> },
-    { name: "C#", icon: <SiSharp /> },
-    { name: "Git", icon: <FaGitAlt /> },
-    { name: "Python", icon: <FaPython /> },
-  ];
+const techCategories = [
+  {
+    title: "Frontend",
+    technologies: [
+      { name: "Vue.js", icon: <FaVuejs /> },
+      { name: "React.js", icon: <FaReact /> },
+      { name: "Angular", icon: <SiAngular /> },
+      { name: "HTML5", icon: <FaHtml5 /> },
+      { name: "CSS3", icon: <FaCss3Alt /> },
+      { name: "JavaScript (ES6+)", icon: <FaJsSquare /> },
+      { name: "TypeScript", icon: <SiTypescript /> },
+    ],
+  },
+  {
+    title: "Backend",
+    technologies: [
+      { name: "C# (.NET)", icon: <SiSharp /> },
+      { name: "Node.js", icon: <FaNodeJs /> },
+      { name: "Python", icon: <FaPython /> },
+      { name: "PHP", icon: <FaPhp /> },
+    ],
+  },
+  {
+    title: "Bases de Datos",
+    technologies: [
+      { name: "Oracle (PL/SQL)", icon: <SiOracle /> },
+      { name: "MySQL", icon: <SiMysql /> },
+      { name: "MongoDB", icon: <SiMongodb /> },
+    ],
+  },
+  {
+    title: "Herramientas de IA",
+    technologies: [
+      { name: "Cursor AI", icon: <FaRobot /> },
+      { name: "Claude (Anthropic)", icon: <HiSparkles /> },
+      { name: "GitHub Copilot", icon: <SiGithub /> },
+    ],
+  },
+  {
+    title: "Infraestructura",
+    technologies: [
+      { name: "Docker", icon: <SiDocker /> },
+      { name: "Git", icon: <FaGitAlt /> },
+      { name: "GitLab CI/CD", icon: <SiGitlab /> },
+    ],
+  },
+  {
+    title: "Metodologías",
+    technologies: [
+      { name: "Agile/Scrum", icon: <FaProjectDiagram /> },
+      { name: "APIs RESTful", icon: <FaPlug /> },
+    ],
+  },
+];
 
-  return (
-    <div className={styles.techGrid}>
-      {techList.map((tech, i) => (
-        <div key={i} className={styles.techCard}>
-          <div className={styles.icon}>{tech.icon}</div>
-          <p>{tech.name}</p>
+const TechnologiesGrid = () => (
+  <div className={styles.techCategories}>
+    {techCategories.map((category, catIdx) => (
+      <div key={catIdx} className={styles.techCategory}>
+        <h4 className={styles.techCategoryTitle}>{category.title}</h4>
+        <div className={styles.techGrid}>
+          {category.technologies.map((tech, i) => (
+            <div key={i} className={styles.techCard}>
+              <div className={styles.icon}>{tech.icon}</div>
+              <p>{tech.name}</p>
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
-  );
-};
+      </div>
+    ))}
+  </div>
+);
 
 const QuienSoy = () => (
   <div className={styles.contentDiv}>
@@ -66,36 +123,30 @@ const Experiencia = () => (
   <div className={styles.contentDiv}>
     <strong>
       <span className="company">AFP Modelo</span>
-      <span className="job">Desarrollador Web (Ene 2024 - Presente)</span>
+      <span className="job">Desarrollador Web (Ene 2024 – presente) · Santiago, Chile (Híbrido)</span>
     </strong>
     <br />
-    <p>
-      En mi rol actual, participo en el desarrollo web con <strong>Vue, C# y PL/SQL</strong>, creando y manteniendo funcionalidades que optimizan la plataforma. Además, utilizo <strong>Python</strong> para tareas de automatización y soporte, lo que me permite mejorar procesos internos y agilizar la resolución de incidencias. Todo mi trabajo se orienta a la entrega eficiente de proyectos y tickets, gestionando versiones con GitLab.
-    </p>
-    <br />
     <ul>
-      <li>Investigo y desarrollo nuevas funcionalidades que optimizan el rendimiento de la plataforma.</li>
-      <li>Integro APIs RESTful para facilitar la comunicación entre diferentes partes del sistema.</li>
-      <li>Automatizo procesos repetitivos para mejorar la efectividad y agilidad de los flujos internos.</li>
-      <li>Soluciono bugs y advertencias del sistema reportados por los usuarios.</li>
-      <li>Participo activamente en la migración de sistemas internos hacia plataformas web más modernas.</li>
-      <li>Trabajo en equipo con distintas áreas bajo metodologías ágiles, reduciendo tiempos de entrega y mejorando la calidad del producto.</li>
+      <li>Desarrollo y mantenimiento de funcionalidades web con Vue.js, C# (.NET) y PL/SQL sobre Oracle, atendiendo proyectos internos y tickets de soporte.</li>
+      <li>Automatización de procesos operativos con Python, reduciendo tiempos de ejecución y minimizando errores manuales en flujos críticos.</li>
+      <li>Integración de APIs RESTful para comunicación entre microservicios y módulos internos de la plataforma.</li>
+      <li>Investigación e implementación de mejoras de rendimiento en el frontend y backend de la plataforma.</li>
+      <li>Resolución de incidencias y bugs reportados por usuarios, priorizando según impacto en producción.</li>
+      <li>Uso de Cursor AI y Claude para acelerar integración de nuevas funcionalidades, revisiones de código, generación de tests y documentación técnica.</li>
+      <li>Gestión de versiones y colaboración con GitLab siguiendo flujos de trabajo basados en ramas.</li>
     </ul>
     <br />
     <strong>
       <span className="company">Iplacex</span>
-      <span className="job">Desarrollador de recursos web interactivos para la educación (Nov 2022 - Feb 2024)</span>
+      <span className="job">Desarrollador de Recursos Web Interactivos (Nov 2022 – Feb 2024) · Santiago, Chile (Remoto)</span>
     </strong>
     <br />
-    <p>
-      Formé parte del equipo encargado de la transformación y adaptación estratégica de material educativo para la plataforma digital Rise, con el objetivo de crear experiencias de aprendizaje interactivas, dinámicas y atractivas.
-    </p>
-    <br />
     <ul>
-      <li>Seleccioné y adapté material educativo para la plataforma digital Rise, asegurando la creación de experiencias de aprendizaje interactivas y atractivas.</li>
-      <li>Optimicé la interfaz de la plataforma, logrando una experiencia de usuario fluida y envolvente.</li>
-      <li>Colaboré con expertos en diseño instruccional para garantizar contenidos educativos de calidad y precisión.</li>
-      <li>Me enfoqué en mantener altos estándares de innovación y calidad, revisando y mejorando cada aspecto del contenido.</li>
+      <li>Transformación y adaptación estratégica de material educativo para la plataforma digital Articulate Rise.</li>
+      <li>Optimización de la interfaz de usuario para garantizar experiencias de aprendizaje fluidas e interactivas.</li>
+      <li>Colaboración con expertos en diseño instruccional para desarrollar contenido educativo de alto impacto pedagógico.</li>
+      <li>Selección y curación de material educativo asegurando relevancia curricular y estándares de calidad.</li>
+      <li>Implementación de mejoras continuas en el contenido basadas en métricas de uso y retroalimentación de usuarios.</li>
     </ul>
   </div>
 );

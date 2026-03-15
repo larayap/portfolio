@@ -128,7 +128,7 @@
     transition: transform 0.3s ease, filter 0.3s ease;
 }
 
-/* Overlay que se muestra al pasar el cursor sobre la imagen */
+/* Overlay del enlace "Ver proyecto" sobre la imagen */
 .imageOverlay {
     position: absolute;
     top: 0;
@@ -139,21 +139,38 @@
     align-items: center;
     justify-content: center;
     opacity: 0;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.5);
     color: #fff;
-    font-size: 1.2em;
+    font-size: 1rem;
+    font-weight: 600;
     text-decoration: none;
-    transition: opacity 0.5s ease;
+    transition: opacity 0.4s ease-in-out, background-color 0.4s ease-in-out;
+}
+
+.imageOverlay span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 24px;
 }
 
 .imageContainer {
     position: relative;
     overflow: hidden;
+    border-radius: 4px;
 }
 
-/* Se muestra el overlay al hacer hover */
-.imageContainer:hover .imageOverlay {
+.imageContainer:hover .imageOverlay,
+.imageOverlay:focus {
   opacity: 1;
+}
+
+.imageOverlay:focus {
+  outline: 2px solid #E0E0E0;
+  outline-offset: 2px;
 }
 
 /* Estilo para el icono de GitHub junto al título */
@@ -176,19 +193,70 @@
 /* Estilo para el título del proyecto */
 .projectTitle {
     font-size: 1.3em;
-    margin-bottom: 5px;
+    margin: 0 0 8px 0;
     color: #fff;
     display: flex;
     align-items: center;
     justify-content: space-between;
     font-weight: bold;
-  }  
+  }
 
-/* Estilo para las tecnologías utilizadas en el proyecto */
-.projectTech {
-    font-size: 0.9em;
-    color: #ddd;
-    margin-bottom: 8px;
+/* Descripción del proyecto */
+.projectDescription {
+    font-size: 0.85em;
+    color: #b0b0b0;
+    line-height: 1.4;
+    margin: 0 0 6px 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Botón "Ver más" para abrir modal de descripción (desktop) */
+.verMasButton {
+    display: inline-block;
+    font-size: 0.8em;
+    color: #E0E0E0;
+    background: none;
+    border: none;
+    padding: 0 0 10px 0;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    text-underline-offset: 2px;
+    text-decoration-thickness: 2px;
+    text-decoration: underline;
+    font-family: inherit;
+    margin: 0 0 4px 0;
+}
+
+.verMasButton:hover {
+    color: #fff;
+}
+
+.verMasButton:focus-visible {
+    color: #fff;
+    outline: 1px solid rgba(224, 224, 224, 0.5);
+    outline-offset: 2px;
+}
+
+/* Contenedor de tecnologías como pills/tags */
+.projectTechList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0;
+}
+
+.projectTechTag {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #E0E0E0;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 /* Estilo para la categoría del proyecto */
@@ -286,15 +354,33 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: rgba(0,0,0,0.5);
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0.4;
+  transition: opacity 0.4s ease-in-out;
   color: #fff;
   text-decoration: none;
+  font-weight: 600;
 }
 
-.imageContainerMobile:hover .imageOverlayMobile {
+.imageOverlayMobile span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 24px;
+}
+
+.imageContainerMobile:hover .imageOverlayMobile,
+.imageContainerMobile:focus-within .imageOverlayMobile,
+.imageOverlayMobile:focus {
   opacity: 1;
+}
+
+.imageOverlayMobile:focus {
+  outline: 2px solid #E0E0E0;
+  outline-offset: 2px;
 }
 
 .projectTitleMobile {
@@ -302,7 +388,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0;
+  margin: 0 0 8px 0;
 }
 
 .githubIconMobile {
@@ -310,10 +396,58 @@
   color: #fff;
 }
 
-.projectTechMobile {
+.projectDescriptionMobile {
   font-size: 0.9em;
-  color: #ccc;
+  color: #b0b0b0;
+  line-height: 1.45;
+  margin: 0 0 6px 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Botón "Ver más" en mobile */
+.verMasButtonMobile {
+  display: inline-block;
+  font-size: 0.85em;
+  color: #E0E0E0;
+  background: none;
+  border: none;
+  padding: 0 0 10px 0;
+  cursor: pointer;
+  transition: color 0.4s ease-in-out;
+  font-family: inherit;
+  margin: 0 0 4px 0;
+  align-self: flex-start;
+}
+
+.verMasButtonMobile:hover {
+  color: #fff;
+}
+
+.verMasButtonMobile:focus-visible {
+  color: #fff;
+  outline: 1px solid rgba(224, 224, 224, 0.5);
+  outline-offset: 2px;
+}
+
+.projectTechListMobile {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
   margin: 0;
+}
+
+.projectTechTagMobile {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: #E0E0E0;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 /* Estilo para la categoría del proyecto en mobile */
@@ -326,4 +460,156 @@
   display: inline-block;
   border: 1px solid rgba(255, 255, 255, 0.3);
   align-self: flex-start;
+}
+
+/* Modal descripción completa */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  box-sizing: border-box;
+  animation: modalOverlayEnter 0.25s ease-out forwards;
+}
+
+.modalOverlay.modalOverlayClosing {
+  animation: modalOverlayExit 0.2s ease-in forwards;
+}
+
+.modalContent {
+  background: #121212;
+  border: 1px solid rgba(224, 224, 224, 0.15);
+  border-radius: 12px;
+  padding: 28px;
+  max-width: 480px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  animation: modalContentEnter 0.3s ease-out forwards;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+.modalOverlayClosing .modalContent {
+  animation: modalContentExit 0.2s ease-in forwards;
+}
+
+@keyframes modalOverlayEnter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalOverlayExit {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes modalContentEnter {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes modalContentExit {
+  from {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+}
+
+.modalTitle {
+  font-size: 1.5em;
+  font-family: "Aquire", sans-serif;
+  font-weight: bold;
+  margin: 0 0 12px 0;
+  color: #E0E0E0;
+  letter-spacing: 0.02em;
+}
+
+.modalDescription {
+  font-size: 0.95em;
+  color: #b0b0b0;
+  line-height: 1.6;
+  margin: 0 0 16px 0;
+}
+
+.modalTechList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 20px 0;
+}
+
+.modalTechTag {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #E0E0E0;
+  background-color: rgba(255, 255, 255, 0.08);
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.modalLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.modalLink {
+  font-size: 0.9em;
+  color: #E0E0E0;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+  transition: color 0.4s ease-in-out, opacity 0.4s ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.modalLink:hover {
+  color: #fff;
+  opacity: 0.95;
+}
+
+.modalLink:focus-visible {
+  outline: 1px solid rgba(224, 224, 224, 0.5);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.modalCloseButton {
+  font-size: 0.95em;
+  color: #E0E0E0;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.modalCloseButton:hover,
+.modalCloseButton:focus-visible {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  outline: 1px solid rgba(224, 224, 224, 0.5);
+  outline-offset: 2px;
 }

@@ -43,7 +43,7 @@ const FooterText: React.FC = () => {
         </div>
       )}
       <p className={styles.footerText}>
-        © Copyright 2025. Luis Araya
+        © Copyright 2026. Luis Araya
       </p>
     </div>
   );

@@ -12,6 +12,10 @@
 
 # testing
 /coverage
+/test-results
+/playwright-report
+/blob-report
+/playwright/.cache
 
 # next.js
 /.next/
@@ -44,4 +48,7 @@ next-env.d.ts
 # Agent skills CLI (canonical install path; we use .cursor/skills)
 .agents
 .claude
+
+# Miniverse (eliminado - borrar carpeta portfolio/ manualmente si persiste)
+/portfolio
 skills-lock.json

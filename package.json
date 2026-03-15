@@ -7,7 +7,9 @@
     "build": "next build --no-lint",
     "start": "next start",
     "lint": "next lint",
-    "skills:sync": "node scripts/sync-skills-to-cursor.cjs"
+    "skills:sync": "node scripts/sync-skills-to-cursor.cjs",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui"
   },
   "dependencies": {
     "@studio-freight/lenis": "^1.0.42",
@@ -25,6 +27,7 @@
     "swiper": "^12.0.3"
   },
   "devDependencies": {
+    "@playwright/test": "^1.49.0",
     "@types/locomotive-scroll": "^4.1.4",
     "@types/node": "^20",
     "@types/nodemailer": "^6.4.17",

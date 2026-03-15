@@ -1,25 +1,34 @@
 [
-    {
-      "image": "/portfolio.png",
-      "title": "Portafolio",
-      "technologies": ["React", "TypeScript", "Next", "CSS"],
-      "link": "/",
-      "github": "https://github.com/Flacamasu/portfolio"
-    },
-    
-    {
-      "image": "/nyx.png",
-      "title": "Buscador de prácticas - Nyx",
-      "technologies": ["React", "CSS", "MySql"],
-      "link": "https://nyx.larayap.com/",
-      "github": "https://github.com/larayap/Tesis-nyx"
-    },
-    {
-      "image": "/blogs.png",
-      "title": "Blogs",
-      "technologies": ["React", "Vite", "Python", "Django"],
-      "link": "https://blogs.larayap.com/",
-      "github": "https://github.com/larayap/BlogsBackFront"
-    }
-  ]
+  {
+    "image": "/margarita.png",
+    "title": "Margarita Pardo - Psicología",
+    "description": "Sitio web profesional para consulta de psicología clínica. Incluye presentación de servicios (niños, adultos mayores, terapias grupales), testimonios de pacientes, agendamiento por WhatsApp y diseño responsive con Vue 3 y Bootstrap.",
+    "technologies": ["Vue", "Vite", "Bootstrap", "CSS"],
+    "link": "https://psicologamargaritapardo.cl/"
+  },
+  {
+    "image": "/portfolio.png",
+    "title": "Portafolio",
+    "description": "Sitio personal con scroll suave, animaciones y secciones About, Proyectos y Contacto. Export estático con Next.js.",
+    "technologies": ["React", "TypeScript", "Next", "CSS"],
+    "link": "/",
+    "github": "https://github.com/Flacamasu/portfolio"
+  },
+  {
+    "image": "/nyx.png",
+    "title": "Buscador de prácticas - Nyx",
+    "description": "Plataforma para buscar y gestionar prácticas profesionales. Incluye filtros, favoritos y panel de administración con MySQL.",
+    "technologies": ["React", "CSS", "MySql"],
+    "link": "https://nyx.larayap.com/",
+    "github": "https://github.com/larayap/Tesis-nyx"
+  },
+  {
+    "image": "/blogs.png",
+    "title": "Blogs",
+    "description": "Aplicación full-stack de blogs: front en React + Vite, API y CMS en Django. Crear, editar y comentar entradas.",
+    "technologies": ["React", "Vite", "Python", "Django"],
+    "link": "https://blogs.larayap.com/",
+    "github": "https://github.com/larayap/BlogsBackFront"
+  }
+]
   

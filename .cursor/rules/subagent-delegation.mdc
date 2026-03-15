@@ -1,18 +1,20 @@
 ---
-description: Delegar al subagente que corresponda según la petición del usuario (features, bugs, commits).
+description: Delegar al subagente que corresponda según la petición del usuario (features, bugs, commits). Obligatorio antes de ejecutar.
 alwaysApply: true
 ---
 
-# Delegación a subagentes
+# Delegación a subagentes (obligatoria)
 
-En lo posible, usa el subagente adecuado según lo que pida el usuario:
+**Antes de ejecutar cualquier tarea:** comprueba si la petición encaja en uno de estos tres roles. Si encaja, **debes delegar** usando la herramienta de subagentes (mcp_task) con el `subagent_type` indicado. No ejecutes tú mismo esa tarea.
 
-| Petición del usuario | Subagente a usar | Cómo invocar |
-|----------------------|------------------|--------------|
-| Agregar funcionalidad, implementar feature, nueva capacidad | **feature-developer** | `/feature-developer` o "usa el subagente feature-developer" |
-| Arreglar bug, error que no funciona, fallo en tests | **bug-fixer** | `/bug-fixer` o "usa el subagente bug-fixer" |
-| Hacer commit, guardar en git, "/commit" | **committer** | `/committer` o "usa el subagente committer" |
+| Petición del usuario | Subagente | subagent_type |
+|----------------------|-----------|---------------|
+| Agregar funcionalidad, implementar feature, nueva capacidad | feature-developer | `feature-developer` |
+| Arreglar bug, error, algo no funciona, fallo en tests | bug-fixer | `bug-fixer` |
+| Hacer commit, guardar en git, "commit", "/commit" | committer | `committer` |
 
-- Si la petición encaja claramente en uno de estos tres roles, delega la tarea a ese subagente en lugar de ejecutarla tú mismo.
-- Si combina varios roles (ej. "implementa X y haz commit"), puedes lanzar primero el subagente de la tarea principal y después el committer, o indicar al usuario que haga el commit después.
-- No delegues tareas que no encajen (p. ej. solo preguntas, refactors genéricos o revisión de código sin bug concreto).
+**Para commits:** no ejecutes nunca `git add`/`git commit` (ni comandos git de commit) tú mismo. Siempre invoca al subagente committer con mcp_task y deja que él aplique la skill git-commit.
+
+**Para features/funcionalidades:** no implementes tú mismo. Si el usuario pide mejoras, "desarrolla", "implementa X", "agrega Y", "quiero una mejora en Z y que la hagas", o cualquier extensión nueva de la app, delega en feature-developer con mcp_task (`subagent_type: "feature-developer"`). Incluye en el prompt el contexto necesario (archivos, requisitos, stack) para que el subagente ejecute la tarea.
+
+**Excepciones (no delegar):** solo preguntas, refactors genéricos sin feature/bug concreto, o revisión de código sin "arreglar" algo. Si combina roles (ej. "implementa X y haz commit"), delega la parte principal y luego el committer, o haz primero la tarea y después delega solo el commit.

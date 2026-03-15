@@ -143,7 +143,29 @@
     position: absolute;
     left: -1em;  /* desplaza el guion hacia la izquierda */
   }
-  
+
+  .techCategories {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .techCategory {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .techCategoryTitle {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1em;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+    text-transform: uppercase;
+  }
+
   .techGrid {
     display: flex;
     flex-wrap: wrap;       /* Permite que las tarjetas hagan “salto de línea” */
