@@ -35,6 +35,9 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+# .env.production se versiona a proposito: solo contiene la URL publica de la
+# API de contacto y el build de CI la necesita para hornear NEXT_PUBLIC_API_SEND.
+!.env.production
 
 # vercel
 .vercel
