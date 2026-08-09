@@ -1,0 +1,49 @@
+name: Desplegar
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+concurrency:
+  group: desplegar-portfolio
+  cancel-in-progress: true
+
+jobs:
+  desplegar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar dependencias
+        run: npm ci || npm install
+
+
+      - name: Compilar
+        run: npm run build
+
+
+      # Salvaguarda: el rsync usa --delete, asi que un build vacio borraria el sitio.
+      - name: Verificar que el build produjo algo
+        run: |
+          test -f "out/index.html" || { echo "El build no genero index.html en out"; exit 1; }
+          echo "Archivos a publicar: $(find "out" -type f | wc -l)"
+
+      - name: Preparar acceso SSH
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H "${{ secrets.DEPLOY_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Publicar en el servidor
+        run: |
+          rsync -az --delete             -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes"             "out/" "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:/var/www/larayap/"
+
+      - name: Limpiar credenciales
+        if: always()
+        run: rm -f ~/.ssh/deploy_key
